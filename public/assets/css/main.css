@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0a0e14;
+    background: #000000ff;
     color: #fff;
     min-height: 100vh;
 }
@@ -15,7 +15,7 @@ body {
 /* Navbar */
 .navbar {
     background: rgba(10, 14, 20, 0.98);
-    padding: 16px 40px;
+    padding: 13px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -152,59 +152,71 @@ body {
     font-size: 16px;
 }
 
-/* Filter Section */
-.filter-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
+/* FILTER SECTION – versi lebih mirip UI referensi */
+.filter-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 30px 0;
 }
 
-.filter-group {
+.filter-box {
+    width: 100%;
+    max-width: 1400px;
+    background: #111213;
+    padding: 28px 40px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.filter-item {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
 }
 
-.filter-group label {
-    color: #8899aa;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.filter-group select {
-    padding: 12px 16px;
-    background: rgba(30, 40, 50, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: #fff;
+.filter-item label {
     font-size: 14px;
+    color: #aaaaaa;
+    margin-left: 4px;
+}
+
+/* Select */
+.filter-item select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: #1c1f26;
+    border: 1px solid #2f3542;
+    color: #ffffff;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s;
-}
-
-.filter-group select:focus {
+    appearance: none;
     outline: none;
-    border-color: #f39c12;
+    position: relative;
 }
 
-/* Section Header */
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
+.filter-item select::-ms-expand {
+    display: none;
 }
 
-.section-header .icon {
-    font-size: 20px;
+.filter-item {
+    position: relative;
 }
 
-.section-header h2 {
-    font-size: 24px;
-    font-weight: 600;
+.filter-item::after {
+    content: "▾";
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    font-size: 16px;
+    color: #888;
+    pointer-events: none;
 }
 
 /* Trending Section */
@@ -219,13 +231,15 @@ body {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    height: 400px;
+    aspect-ratio: 21/9;
+    background: #000;
 }
 
 .trending-main img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
 }
 
 .trending-overlay {
@@ -457,61 +471,53 @@ body {
     transform: translateY(-2px);
 }
 
-/* Category Section */
-.category-section {
-    margin: 60px 0;
-}
-
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 20px;
-}
-
-.category-card {
+/* Kategori model kotak */
+.category-box-style .category-card {
+    background: #1a1a1a;
+    padding: 18px 12px;
+    border-radius: 12px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.3s;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.20);
 }
 
-.category-card:hover {
+.category-box-style .category-card:hover {
+    background: #222;
+    border-color: #f39c12;
     transform: translateY(-4px);
 }
 
-.category-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 12px;
-    background: rgba(30, 40, 50, 0.8);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s;
+.category-box-style .category-icon {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #f39c12;
 }
 
-.category-card:hover .category-icon {
-    border-color: #f39c12;
-    background: rgba(243, 156, 18, 0.1);
-}
-
-.category-name {
+.category-box-style .category-name {
     font-size: 15px;
     font-weight: 600;
+    color: #fff;
     margin-bottom: 4px;
 }
 
-.category-count {
-    color: #8899aa;
+.category-box-style .category-count {
     font-size: 12px;
+    color: #bbbbbb;
+}
+
+.category-box-style {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
 }
 
 /* Footer */
 .footer {
-    background: rgba(15, 20, 25, 0.95);
-    padding: 50px 40px 30px;
+    background: rgba(25, 25, 25, 0.95);
+    padding: 20px 40px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 80px;
 }
@@ -654,4 +660,71 @@ body {
         grid-template-columns: 1fr;
         gap: 30px;
     }
+}
+
+/* ========================================================= */
+/*           TAMBAHAN BARU — CSS MENU DROPDOWN USER          */
+/* ========================================================= */
+
+.user-menu {
+    display: none;
+    position: absolute;
+    top: 56px;
+    right: 0;
+    background: #141921;
+    border: 1px solid #2b3038;
+    border-radius: 10px;
+    padding: 10px 0;
+    width: 180px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    z-index: 999;
+}
+
+.user-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #d3d8df;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.user-menu a:hover {
+    background: #1d2330;
+    color: #f7a21b;
+}
+
+.user-menu a.logout {
+    color: #ff8b8b !important;
+}
+
+.user-menu a.logout:hover {
+    color: #ff4c4c !important;
+}
+
+.user-menu.show {
+    display: block;
+}
+
+/* ========================================================= */
+/*         FIX: TOMBOL FAVORIT NAVBAR TIDAK BISA DIKLIK      */
+/* ========================================================= */
+
+.navbar-left {
+    position: relative;
+    z-index: 9999;
+}
+
+.navbar-right {
+    position: relative;
+    z-index: 1;
+}
+
+/* FIX AGAR <a> TIDAK MEMBESARKAN CARD */
+.film-card-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none !important;
+    color: inherit !important;
 }

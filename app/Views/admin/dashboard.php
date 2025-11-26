@@ -9,7 +9,7 @@
 <body>
     <div class="header">
         <h1>Admin Dashboard</h1>
-        <a href="<?= base_url('auth/logout') ?>" class="logout-btn">Kembali Ke Beranda</a>
+        <a href="<?= base_url('landingpages/index') ?>" class="logout-btn">Kembali Ke Beranda</a>
     </div>
 
     <div class="main-content">

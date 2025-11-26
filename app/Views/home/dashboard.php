@@ -1,70 +1,109 @@
+<?php
+// dashboard.php
+// Pastikan $title, $user, $films, $trending_films, $imageUrl tersedia dari controller
+if (!isset($imageUrl)) $imageUrl = 'https://image.tmdb.org/t/p/w500';
+
+// (Opsional) $userFavorites = array of movie_id yang diambil dari DB untuk menandai favorite pada load
+// Contoh controller: $data['userFavorites'] = $favModel->where('user_id', $userId)->findColumn('movie_id');
+// Jika tidak ada, file masih bekerja tanpa error.
+$userFavorites = $userFavorites ?? [];
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title><?= esc($title) ?></title>
+
+    <!-- CSRF (CodeIgniter 4) -->
+    <meta name="csrf-name" content="<?= csrf_token() ?>">
+    <meta name="csrf-hash" content="<?= csrf_hash() ?>">
+
+    <!-- CSS UTAMA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css') ?>">
+    <style>
+        /* Tambahan kecil styling untuk tombol favorite */
+        .film-favorite { background: transparent; border: 0; font-size:18px; cursor:pointer; }
+        .film-favorite.favorited { transform: scale(1.05); transition: .12s ease; }
+    </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a href="<?= base_url('/dashboard') ?>" class="logo">MOVIX</a>
-            <ul class="nav-links">
-                <li><a href="<?= base_url('/dashboard') ?>" class="active">Film</a></li>
-                <li><a href="#">Genre</a></li>
-                <li><a href="#">Favorit</a></li>
-            </ul>
-        </div>
-        <div class="navbar-right">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Cari film..." id="searchInput">
-            </div>
-            <div class="user-profile" onclick="toggleUserMenu()">
-                <div class="user-avatar">
-                    <?= strtoupper(substr($user['email'], 0, 1)) ?>
-                </div>
-                <div class="notification-badge"></div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <h1>Koleksi Film</h1>
-            <p>Temukan film terbaik untuk Anda</p>
+<!-- ========================================================= -->
+<!--                           NAVBAR                          -->
+<!-- ========================================================= -->
+
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="<?= base_url('/dashboard') ?>" class="logo">MOVIX</a>
+        <ul class="nav-links">
+            <li><a href="<?= base_url('/dashboard') ?>" class="active">Film</a></li>
+            <li><a href="<?= base_url('genre') ?>">Genre</a></li>
+            <li><a href="<?= base_url('favorite') ?>">Favorit</a></li>
+        </ul>
+    </div>
+
+    <div class="navbar-right">
+        <div class="search-box">
+            <span class="search-icon"></span>
+            <input type="text" placeholder="Cari film..." id="searchInput">
         </div>
 
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <div class="filter-group">
+        <div class="user-profile" onclick="toggleUserMenu()">
+            <div class="user-avatar">
+                <?= isset($user['email']) ? strtoupper(substr($user['email'], 0, 1)) : 'U' ?>
+            </div>
+            <div class="notification-badge"></div>
+        </div>
+
+        <div id="userMenu" class="user-menu">
+            <a href="<?= base_url('/') ?>">Ke Landing Page</a>
+            <a href="<?= base_url('auth/logout') ?>" class="logout">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ========================================================= -->
+<!--                        MAIN CONTENT                        -->
+<!-- ========================================================= -->
+
+<div class="main-content">
+
+    <!-- Hero -->
+    <div class="hero-section">
+        <h1>Koleksi Film</h1>
+        <p>Temukan film terbaik untuk Anda</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-container">
+        <div class="filter-box">
+            <div class="filter-item">
                 <label>Genre</label>
                 <select id="genreFilter">
                     <option value="">Semua Genre</option>
                     <option value="Action">Action</option>
-                    <option value="Comedy">Comedy</option>
                     <option value="Drama">Drama</option>
+                    <option value="Comedy">Comedy</option>
                     <option value="Horror">Horror</option>
                     <option value="Romance">Romance</option>
-                    <option value="Sci-fi">Sci-fi</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
                     <option value="Thriller">Thriller</option>
                 </select>
             </div>
-            <div class="filter-group">
+
+            <div class="filter-item">
                 <label>Tahun</label>
                 <select id="yearFilter">
                     <option value="">Semua Tahun</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
+                    <?php for ($y = (int)date('Y'); $y >= 1990; $y--): ?>
+                        <option value="<?= $y ?>"><?= $y ?></option>
+                    <?php endfor; ?>
                 </select>
             </div>
-            <div class="filter-group">
+
+            <div class="filter-item">
                 <label>Rating</label>
                 <select id="ratingFilter">
                     <option value="">Semua Rating</option>
@@ -74,273 +113,397 @@
                     <option value="6">6+ ⭐</option>
                 </select>
             </div>
-            <div class="filter-group">
+
+            <div class="filter-item">
                 <label>Urutkan</label>
                 <select id="sortFilter">
-                    <option value="">Populeritas</option>
+                    <option value="popularitas">Popularitas</option>
                     <option value="newest">Terbaru</option>
                     <option value="oldest">Terlama</option>
                     <option value="rating">Rating Tertinggi</option>
                 </select>
             </div>
         </div>
+    </div>
 
-        <!-- Trending Section -->
-        <?php if (!empty($trending_films)): ?>
-        <div class="section-header">
-            <span class="icon">🔥</span>
-            <h2>Trending Sekarang</h2>
+    <!-- Trending -->
+    <?php if (!empty($trending_films)): ?>
+    <div class="section-header"><h2>Trending Sekarang</h2></div>
+
+    <div class="trending-container">
+        <?php
+            // ambil item utama trending
+            $t = $trending_films[0];
+            // fungsi kecil untuk membuat URL poster yang benar
+            function buildPosterUrl($base, $path) {
+                if (empty($path)) return null;
+                // jika sudah URL penuh
+                if (strpos($path, 'http') === 0) return $path;
+                // jika path dimulai dengan slash (mis: /abc.jpg) -> gabungkan
+                if ($path[0] === '/') return rtrim($base, '/') . $path;
+                // jika path tidak diawali slash -> tambahkan slash
+                return rtrim($base, '/') . '/' . $path;
+            }
+            $t_poster = buildPosterUrl($imageUrl, $t['poster_path'] ?? '');
+        ?>
+        <div class="trending-main">
+            <img src="<?= esc($t_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
+                 alt="<?= esc($t['title']) ?>"
+                 onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+
+            <div class="trending-overlay">
+                <span class="trending-badge"><?= esc($t['vote_average']) ?></span>
+                <span class="trending-badge">Trending</span>
+
+                <h3><?= esc($t['title']) ?></h3>
+                <p><?= isset($t['release_date']) ? substr($t['release_date'], 0, 4) : '' ?></p>
+
+                <a href="#" class="watch-btn">▶ Watch Now</a>
+            </div>
         </div>
 
-        <div class="trending-container">
-            <?php if (isset($trending_films[0])): ?>
-            <div class="trending-main">
-                <?php if (!empty($trending_films[0]['poster_path'])): ?>
-                    <img src="<?= base_url('uploads/posters/' . $trending_films[0]['poster_path']) ?>" alt="<?= esc($trending_films[0]['title']) ?>" onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
-                <?php else: ?>
-                    <img src="<?= base_url('assets/images/placeholder.jpg') ?>" alt="<?= esc($trending_films[0]['title']) ?>">
-                <?php endif; ?>
-                <div class="trending-overlay">
-                    <span class="trending-badge">8.5</span>
-                    <span class="trending-badge">Action, Thriller</span>
-                    <h3><?= esc($trending_films[0]['title']) ?></h3>
-                    <p class="trending-meta"><?= $trending_films[0]['year'] ?> • 2h 30m</p>
-                    <a href="<?= base_url('film/' . $trending_films[0]['id']) ?>" class="watch-btn">
-                        ▶ Watch Now
-                    </a>
-                </div>
-            </div>
-            <?php endif; ?>
+        <div class="trending-list">
+            <?php for ($i = 1; $i < 4 && $i < count($trending_films); $i++): 
+                $tr = $trending_films[$i];
+                $tr_poster = buildPosterUrl($imageUrl, $tr['poster_path'] ?? '');
+            ?>
+                <div class="trending-item">
+                    <img src="<?= esc($tr_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
+                         alt="<?= esc($tr['title']) ?>"
+                         onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
 
-            <div class="trending-list">
-                <?php 
-                $trendingRatings = ['8.9/10', '8.8/10', '7.8/10'];
-                for ($i = 1; $i < count($trending_films) && $i < 3; $i++): 
-                ?>
-                <div class="trending-item" onclick="window.location.href='<?= base_url('film/' . $trending_films[$i]['id']) ?>'">
-                    <?php if (!empty($trending_films[$i]['poster_path'])): ?>
-                        <img src="<?= base_url('uploads/posters/' . $trending_films[$i]['poster_path']) ?>" alt="<?= esc($trending_films[$i]['title']) ?>" onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
-                    <?php else: ?>
-                        <img src="<?= base_url('assets/images/placeholder.jpg') ?>" alt="<?= esc($trending_films[$i]['title']) ?>">
-                    <?php endif; ?>
-                    <span class="trending-item-badge">8.5</span>
-                    <span class="trending-item-rating"><?= $trendingRatings[$i] ?></span>
+                    <span class="trending-item-badge"><?= esc($tr['vote_average']) ?></span>
+
                     <div class="trending-item-overlay">
-                        <h4><?= esc($trending_films[$i]['title']) ?></h4>
-                        <p><?= $trending_films[$i]['year'] ?> • <?= esc($trending_films[$i]['genre']) ?></p>
+                        <h4><?= esc($tr['title']) ?></h4>
+                        <p><?= isset($tr['release_date']) ? substr($tr['release_date'], 0, 4) : '' ?></p>
                     </div>
                 </div>
-                <?php endfor; ?>
+            <?php endfor; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- Semua Film -->
+    <div class="section-header"><h2>Semua Film</h2></div>
+
+    <div class="film-grid" id="filmGrid">
+        <?php foreach ($films as $film): ?>
+            <?php
+                // buat poster (sama logic seperti di atas)
+                $poster = null;
+                if (isset($film['is_tmdb']) && $film['is_tmdb']) {
+                    if (!empty($film['poster_path']) && strpos($film['poster_path'], 'http') === 0) {
+                        $poster = $film['poster_path'];
+                    } else {
+                        $poster = buildPosterUrl($imageUrl, $film['poster_path'] ?? '');
+                    }
+                } else {
+                    // poster lokal (nama file)
+                    $poster = base_url('assets/images/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
+                }
+
+                // apakah film sudah favorit user (jika $userFavorites disediakan)
+                $isFav = in_array($film['id'], $userFavorites ?? []) ? true : false;
+
+                // escape untuk passing ke JS
+                $jsTitle = addslashes($film['title'] ?? '');
+                $jsPoster = addslashes($poster ?? '');
+            ?>
+            <div class="film-card"
+             onclick="goDetail(<?= $film['id'] ?>, <?= isset($film['is_tmdb']) ? 1 : 0 ?>)>"
+            data-id="<?= esc($film['id']) ?>"
+            data-url="<?= base_url('detail/' . $film['id']) ?>"
+            data-genre="<?= esc($film['genre'] ?? '') ?>"
+            data-year="<?= esc($film['year'] ?? '') ?>"
+            data-rating="<?= esc($film['rating'] ?? 0) ?>">
+
+            <img src="<?= esc($poster) ?>"
+                alt="<?= esc($film['title']) ?>"
+                class="film-poster"
+                onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
+
+            <span class="film-rating"><?= number_format($film['rating'] ?? 0, 1) ?></span>
+
+            <button class="film-favorite <?= $isFav ? 'favorited' : '' ?>"
+                    onclick="event.stopPropagation(); toggleFavorite(<?= (int)$film['id'] ?>, '<?= $jsTitle ?>', '<?= $jsPoster ?>', this)">
+                <?= $isFav ? '❤️' : '♡' ?>
+            </button>
+
+            <div class="film-info">
+                <h3 class="film-title"><?= esc($film['title']) ?></h3>
+                <div class="film-meta">
+                    <span><?= esc($film['genre'] ?? '-') ?></span>
+                    <span><?= esc($film['year'] ?? '-') ?></span>
+                </div>
             </div>
         </div>
-        <?php endif; ?>
 
-        <!-- All Films Section -->
-        <div class="section-header">
-            <h2>Semua Film</h2>
-        </div>
+        <?php endforeach; ?>
+    </div>
 
-        <div class="film-grid" id="filmGrid">
-            <?php if (!empty($films)): ?>
-                <?php foreach ($films as $film): ?>
-                <div class="film-card" data-genre="<?= esc($film['genre']) ?>" data-year="<?= $film['year'] ?>" data-rating="<?= $film['rating'] ?? 0 ?>">
-                    <img src="<?= base_url('assets/images/poster-' . $film['id'] . '.jpg') ?>" 
-                         alt="<?= esc($film['title']) ?>" 
-                         class="film-poster"
-                         onerror="this.src='https://via.placeholder.com/300x450/1a2332/f39c12?text=<?= urlencode($film['title']) ?>'">
-                    <span class="film-rating"><?= number_format($film['rating'] ?? 0, 1) ?></span>
-                    <button class="film-favorite" onclick="toggleFavorite(event, <?= $film['id'] ?>)">♡</button>
-                    <div class="film-info">
-                        <h3 class="film-title"><?= esc($film['title']) ?></h3>
-                        <div class="film-meta">
-                            <span><?= esc($film['genre']) ?></span>
-                            <span><?= $film['year'] ?></span>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p style="grid-column: 1/-1; text-align: center; padding: 60px; color: #8899aa;">
-                    Belum ada film tersedia. Admin sedang menambahkan film baru.
-                </p>
-            <?php endif; ?>
-        </div>
+    <!-- Category -->
+    <div class="category-section">
+        <div class="section-header"><h2>Jelajahi Kategori</h2></div>
 
-        <!-- Load More Button -->
-        <?php if (count($films) >= 6): ?>
-        <div class="load-more-container">
-            <button class="load-more-btn" onclick="loadMore()">Muat Film Lain</button>
-        </div>
-        <?php endif; ?>
-
-        <!-- Category Section -->
-        <div class="category-section">
-            <div class="section-header">
-                <h2>Jelajahi Kategori</h2>
-            </div>
-            <div class="category-grid">
-                <div class="category-card" onclick="filterByGenre('Action')">
-                    <div class="category-icon">💥</div>
-                    <div class="category-name">Action</div>
-                    <div class="category-count">245 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Romance')">
-                    <div class="category-icon">💕</div>
-                    <div class="category-name">Romance</div>
-                    <div class="category-count">186 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Comedy')">
-                    <div class="category-icon">😄</div>
-                    <div class="category-name">Comedy</div>
-                    <div class="category-count">156 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Horror')">
-                    <div class="category-icon">👻</div>
-                    <div class="category-name">Horror</div>
-                    <div class="category-count">98 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Sci-Fi')">
-                    <div class="category-icon">🚀</div>
-                    <div class="category-name">Sci-Fi</div>
-                    <div class="category-count">134 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Thriller')">
-                    <div class="category-icon">👁️</div>
-                    <div class="category-name">Thriller</div>
-                    <div class="category-count">187 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('Fantasy')">
-                    <div class="category-icon">🧙</div>
-                    <div class="category-name">Fantasy</div>
-                    <div class="category-count">89 Film</div>
-                </div>
-                <div class="category-card" onclick="filterByGenre('History')">
-                    <div class="category-icon">🕐</div>
-                    <div class="category-name">History</div>
-                    <div class="category-count">78 Film</div>
-                </div>
-            </div>
+        <div class="category-grid category-box-style">
+            <div class="category-card" onclick="filterByGenre('Action')">💥 Action</div>
+            <div class="category-card" onclick="filterByGenre('Romance')">💕 Romance</div>
+            <div class="category-card" onclick="filterByGenre('Comedy')">😄 Comedy</div>
+            <div class="category-card" onclick="filterByGenre('Horror')">👻 Horror</div>
+            <div class="category-card" onclick="filterByGenre('Sci-Fi')">🚀 Sci-Fi</div>
+            <div class="category-card" onclick="filterByGenre('Thriller')">👁️ Thriller</div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Movix</h3>
-                <p>Platform streaming film terbaik dengan koleksi lengkap dari berbagai genre.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">🐦</a>
-                    <a href="#" class="social-link">📷</a>
-                    <a href="#" class="social-link">▶️</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Genre</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Drama</a></li>
-                    <li><a href="#">Comedy</a></li>
-                    <li><a href="#">Romance</a></li>
-                    <li><a href="#">Horror</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Bantuan</h3>
-                <ul class="footer-links">
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Kontak</a></li>
-                    <li><a href="#">Kebijakan</a></li>
-                    <li><a href="#">Syarat & Ketentuan</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Newsletter</h3>
-                <p>Dapatkan update film terbaru!</p>
-                <form class="newsletter-form" onsubmit="return false;">
-                    <input type="email" placeholder="Email Anda">
-                    <button type="submit">→</button>
-                </form>
+</div>
+
+<!-- ========================================================= -->
+<!--                           FOOTER                          -->
+<!-- ========================================================= -->
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Movix</h3>
+            <p>Platform streaming film terbaik dengan koleksi lengkap dari berbagai genre.</p>
+            <div class="social-links">
+                <a href="#" class="social-link"></a>
+                <a href="#" class="social-link"></a>
+                <a href="#" class="social-link"></a>
+                <a href="#" class="social-link"></a>
             </div>
         </div>
-        <div class="footer-bottom">
-            © 2025 Movix. All rights reserved.
+
+        <div class="footer-section">
+            <h3>Genre</h3>
+            <ul class="footer-links">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Drama</a></li>
+                <li><a href="#">Comedy</a></li>
+                <li><a href="#">Romance</a></li>
+                <li><a href="#">Horror</a></li>
+            </ul>
         </div>
-    </footer>
 
-    <script>
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const query = this.value.trim();
-                if (query) {
-                    window.location.href = `<?= base_url('search') ?>?q=${encodeURIComponent(query)}`;
-                }
-            }
-        });
+        <div class="footer-section">
+            <h3>Bantuan</h3>
+            <ul class="footer-links">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Kontak</a></li>
+                <li><a href="#">Kebijakan</a></li>
+                <li><a href="#">Syarat & Ketentuan</a></li>
+            </ul>
+        </div>
 
-        // Filter functionality
-        function applyFilters() {
-            const genre = document.getElementById('genreFilter').value;
-            const year = document.getElementById('yearFilter').value;
-            const rating = document.getElementById('ratingFilter').value;
-            const cards = document.querySelectorAll('.film-card');
+        <div class="footer-section">
+            <h3>Newsletter</h3>
+            <p>Dapatkan update film terbaru!</p>
+            <form class="newsletter-form" onsubmit="return false;">
+                <input type="email" placeholder="Email Anda">
+                <button type="submit">→</button>
+            </form>
+        </div>
+    </div>
 
-            cards.forEach(card => {
-                const cardGenre = card.dataset.genre;
-                const cardYear = card.dataset.year;
-                const cardRating = parseFloat(card.dataset.rating);
+    <div class="footer-bottom">
+        © <?= date('Y') ?> Movix. All rights reserved.
+    </div>
+</footer>
 
-                let show = true;
+<!-- ===================================================== -->
+<!--                     JAVASCRIPT                         -->
+<!-- ===================================================== -->
 
-                if (genre && !cardGenre.includes(genre)) show = false;
-                if (year && cardYear !== year) show = false;
-                if (rating && cardRating < parseFloat(rating)) show = false;
+<script>
+/* util: ambil CSRF dari meta */
+const csrfName = document.querySelector('meta[name="csrf-name"]').content;
+let csrfHash = document.querySelector('meta[name="csrf-hash"]').content;
 
-                card.style.display = show ? 'block' : 'none';
-            });
+function toggleUserMenu() {
+    document.getElementById("userMenu").classList.toggle("show");
+}
+
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.user-profile')) {
+        document.getElementById("userMenu").classList.remove("show");
+    }
+});
+
+/* ======================================== */
+/*           SEARCH + FILTER LOGIC          */
+/* ======================================== */
+
+const filmGrid = document.getElementById("filmGrid");
+const searchInput = document.getElementById("searchInput");
+const genreFilter = document.getElementById("genreFilter");
+const yearFilter = document.getElementById("yearFilter");
+const ratingFilter = document.getElementById("ratingFilter");
+const sortFilter = document.getElementById("sortFilter");
+
+let notFoundMsg = document.createElement("div");
+notFoundMsg.innerHTML = "Tidak ada film ditemukan...";
+notFoundMsg.style.textAlign = "center";
+notFoundMsg.style.padding = "40px";
+notFoundMsg.style.color = "#8899aa";
+notFoundMsg.style.fontSize = "18px";
+notFoundMsg.style.display = "none";
+filmGrid.parentNode.insertBefore(notFoundMsg, filmGrid.nextSibling);
+
+function applyAll() {
+    const keyword = searchInput.value.toLowerCase();
+    const genre = genreFilter.value.toLowerCase();
+    const year = yearFilter.value;
+    const rating = ratingFilter.value;
+    const sort = sortFilter.value;
+
+    const cards = Array.from(document.querySelectorAll(".film-card"));
+    let visibleCards = [];
+
+    cards.forEach(card => {
+        const title = (card.querySelector(".film-title")?.innerText || '').toLowerCase();
+        const filmGenre = (card.dataset.genre || '').toLowerCase();
+        const filmYear = card.dataset.year || '';
+        const filmRating = parseFloat(card.dataset.rating || 0);
+
+        let visible = true;
+
+        if (keyword && !title.includes(keyword) && !filmGenre.includes(keyword))
+            visible = false;
+        if (genre && !filmGenre.includes(genre))
+            visible = false;
+        if (year && filmYear !== year)
+            visible = false;
+        if (rating && filmRating < parseFloat(rating))
+            visible = false;
+
+        card.style.display = visible ? "block" : "none";
+        if (visible) visibleCards.push(card);
+    });
+
+    visibleCards.sort((a, b) => {
+        let rA = parseFloat(a.dataset.rating || 0);
+        let rB = parseFloat(b.dataset.rating || 0);
+        let yA = parseInt(a.dataset.year || 0);
+        let yB = parseInt(b.dataset.year || 0);
+
+        switch (sort) {
+            case "rating":
+                return rB - rA;
+            case "newest":
+                return yB - yA;
+            case "oldest":
+                return yA - yB;
+            default:
+                return 0;
         }
+    });
 
-        document.getElementById('genreFilter').addEventListener('change', applyFilters);
-        document.getElementById('yearFilter').addEventListener('change', applyFilters);
-        document.getElementById('ratingFilter').addEventListener('change', applyFilters);
+    visibleCards.forEach(card => filmGrid.appendChild(card));
+    notFoundMsg.style.display = visibleCards.length === 0 ? "block" : "none";
+}
 
-        // Toggle favorite
-        function toggleFavorite(event, filmId) {
-            event.stopPropagation();
-            const btn = event.target;
-            btn.textContent = btn.textContent === '♡' ? '❤️' : '♡';
+// debounce kecil
+let debounceTimer;
+searchInput.addEventListener("keyup", (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(applyAll, 250);
+});
+
+genreFilter.addEventListener("change", applyAll);
+yearFilter.addEventListener("change", applyAll);
+ratingFilter.addEventListener("change", applyAll);
+sortFilter.addEventListener("change", applyAll);
+
+searchInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        applyAll();
+    }
+});
+
+/* ======================================== */
+/*           FAVORITE TOGGLE (AJAX)         */
+/* ======================================== */
+
+function toggleFavorite(movieId, title, poster, btn) {
+    // kirim CSRF dengan nama token dinamis (CI4 expects name => hash)
+    const payload = {
+        movie_id: movieId,
+        title: title,
+        poster: poster
+    };
+    // sisipkan CSRF ke object payload
+    payload[csrfName] = csrfHash;
+
+    fetch("<?= base_url('/favorite/toggle') ?>", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => {
+        // jika server mengembalikan header CSRF baru, update hash (CI4 rotate token)
+        const newCsrf = res.headers.get('X-CSRF-Hash');
+        if (newCsrf) {
+            csrfHash = newCsrf;
+            document.querySelector('meta[name="csrf-hash"]').content = newCsrf;
         }
-
-        // Filter by genre from category
-        function filterByGenre(genre) {
-            document.getElementById('genreFilter').value = genre;
-            applyFilters();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        return res.json();
+    })
+    .then(res => {
+        if (res.status === "added") {
+            btn.innerHTML = "❤️";
+            btn.classList.add("favorited");
+        } else if (res.status === "removed") {
+            btn.innerHTML = "♡";
+            btn.classList.remove("favorited");
+        } else {
+            console.warn('Unknown response', res);
         }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Gagal menyimpan favorit. Coba lagi.');
+    });
+}
+</script>
+<script>
+    document.querySelectorAll(".film-card").forEach(card => {
+    card.addEventListener("click", () => {
+        const url = card.dataset.url;
+        if (url) window.location.href = url;
+    });
+});
 
-        // Load more films
-        function loadMore() {
-            alert('Fitur load more akan segera ditambahkan!');
-        }
+// ======================================================
+// FIX: Klik poster → pindah ke halaman detail (TMDB + lokal)
+// ======================================================
+document.querySelectorAll('.film-card').forEach(card => {
+    // jangan override tombol favorite
+    card.addEventListener('click', function (e) {
 
-        // Add click event to film cards
-        document.querySelectorAll('.film-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const filmId = this.dataset.id;
-                if (filmId) {
-                    window.location.href = `<?= base_url('film/') ?>${filmId}`;
-                }
-            });
-        });
+        // jika yang diklik tombol favorite → jangan pindah halaman
+        if (e.target.closest(".film-favorite")) return;
 
-        // User menu toggle
-        function toggleUserMenu() {
-            if (confirm('Logout dari akun Anda?')) {
-                window.location.href = '<?= base_url('auth/logout') ?>';
-            }
-        }
-    </script>
+        const id = this.dataset.id;
+
+        if (!id) return;
+
+        // arahkan ke halaman detail
+        window.location.href = "<?= base_url('detail') ?>/" + id;
+    });
+});
+function goDetail(id, isTmdb) {
+    if (isTmdb == 1) {
+        window.location.href = "<?= base_url('detail_tmdb/') ?>" + id;
+    } else {
+        window.location.href = "<?= base_url('detail/') ?>" + id;
+    }
+}
+
+</script>
 </body>
 </html>

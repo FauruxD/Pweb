@@ -1,0 +1,371 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0b0b0b;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ------------------------- */
+/* HERO SECTION */
+/* ------------------------- */
+.hero {
+    width: 100%;
+    height: 100vh;
+    background: url('/assets/images/hero-bg.jpg') center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 7%;
+    padding-right: 7%;
+    padding-top: 80px;
+}
+
+/* Overlay gelap */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.92),
+        rgba(0, 0, 0, 0.75),
+        rgba(0, 0, 0, 0.55)
+    );
+    z-index: 1;
+}
+
+/* Fade ke hitam bagian bawah (super smooth) */
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 320px;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.25) 40%,
+        rgba(0, 0, 0, 0.55) 60%,
+        rgba(0, 0, 0, 0.75) 80%,
+        rgba(0, 0, 0, 1) 100%
+    );
+    z-index: 4;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 650px;
+
+     /* NAIKKAN TEKS */
+    transform: translateY(-60px);
+}
+
+/* Tagline */
+.tagline {
+    display: inline-block;
+    background: rgba(255, 204, 0, 0.1);
+    border: 1px solid #fcca03;
+    color: #ffde59;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    backdrop-filter: blur(6px);
+}
+
+/* Title */
+.hero h1 {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+}
+.hero h1 span {
+    color: #fcca03;
+}
+
+/* Description */
+.hero p {
+    margin-top: 18px;
+    font-size: 20px;
+    color: #f2f2f2;
+    opacity: 0.9;
+}
+
+/* Buttons */
+.hero-buttons {
+    margin-top: 35px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-primary {
+    background: #fcca03;
+    padding: 15px 34px;
+    border-radius: 14px;
+    color: #000;
+    font-weight: 800;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    background: #e3b200;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.1);
+    padding: 15px 34px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.25s;
+    backdrop-filter: blur(4px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* ------------------------- */
+/* CTA SECTION */
+/* ------------------------- */
+.cta {
+    background: radial-gradient(circle at center, #f8c50e, #d8a300);
+    padding: 90px 20px;
+    text-align: center;
+    color: #000;
+}
+
+.cta h2 {
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.cta p {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.cta-features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    gap: 15px;
+    max-width: 600px;
+    margin: 40px auto;
+    font-size: 18px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cta small {
+    display: block;
+    margin-top: 15px;
+    opacity: .7;
+}
+
+/* ------------------------- */
+/* GENRE */
+/* ------------------------- */
+.genres {
+    padding: 90px 20px;
+    text-align: center;
+}
+
+.genres h2 {
+    font-size: 42px;
+    font-weight: 700;
+}
+
+.genres p {
+    margin-top: 8px;
+    opacity: .8;
+}
+
+.genre-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+    padding: 0 40px;
+}
+
+.genre-card {
+    background: #1a1a1a;
+    padding: 35px 0;
+    border-radius: 18px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 0 12px #00000030;
+    transition: .25s;
+}
+
+.genre-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px #f7df5f55;
+}
+
+.action { background: linear-gradient(135deg, #3a1d1d, #2a1a1a); }
+.scifi { background: linear-gradient(135deg, #0f2633, #0b1d25); }
+.horror { background: linear-gradient(135deg, #3a263a, #241424); }
+.romance { background: linear-gradient(135deg, #4b1f31, #2d1422); }
+.comedy { background: linear-gradient(135deg, #3a2a0e, #281d0b); }
+.drama { background: linear-gradient(135deg, #0f2d26, #0a1d1a); }
+
+/* ------------------------- */
+/* FEATURED MOVIES */
+/* ------------------------- */
+.featured {
+    padding: 80px 40px;
+}
+
+.featured h2 {
+    font-size: 42px;
+    font-weight: 700;
+}
+
+.featured p {
+    opacity: .8;
+    margin-top: 6px;
+}
+
+.featured-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.movie-card {
+    background: #151515;
+    padding: 14px;
+    border-radius: 18px;
+    position: relative;
+    transition: .25s;
+}
+
+.movie-card:hover {
+    transform: translateY(-4px);
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 14px;
+}
+
+.genre-tag {
+    background: #292929;
+    padding: 6px 12px;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 6px;
+    opacity: .8;
+    font-size: 14px;
+}
+
+.rating {
+    float: right;
+    color: #ffde39;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.movie-card h3 {
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+/* ------------------------- */
+/* FOOTER */
+/* ------------------------- */
+.footer {
+    padding: 45px 100px;
+    background: #111;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.footer-container div h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.footer-container p {
+    opacity: .7;
+    margin: 4px 0;
+}
+
+.footer-about {
+    max-width: 260px;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #333;
+    padding-top: 40px;
+    opacity: .7;
+}
+
+/* ------------------------- */
+/* RESPONSIVE */
+/* ------------------------- */
+@media (max-width: 900px) {
+    .genre-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .featured-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+}
+
+@media (max-width: 600px) {
+    .genre-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .featured-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .cta-features {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
