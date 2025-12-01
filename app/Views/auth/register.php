@@ -38,19 +38,13 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('password')">👁️</button>
+                <input type="password" id="password" name="password" placeholder="Masukkan password" required>
                 </div>
-            </div>
 
             <div class="form-group">
                 <label for="confirm_password">Masukkan ulang Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Masukkan ulang password" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('confirm_password')">👁️</button>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Masukkan ulang password" required>
                 </div>
-            </div>
 
             <button type="submit" class="submit-btn">Daftar</button>
         </form>
@@ -60,19 +54,5 @@
         </div>
     </div>
 
-    <script>
-        function togglePassword(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleBtn = passwordInput.nextElementSibling;
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
-            } else {
-                passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
-            }
-        }
-    </script>
-</body>
+    </body>
 </html>

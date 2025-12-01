@@ -14,8 +14,8 @@
         </div>
 
         <div class="tab-buttons">
-            <button class="tab-btn active" onclick="window.location.href='<?= base_url('auth/login') ?>'">User</button>
-            <button class="tab-btn">Admin</button>
+            <button type="button" class="tab-btn active" id="userTab">User</button>
+            <button type="button" class="tab-btn" id="adminTab">Admin</button>
         </div>
 
         <?php if (session()->getFlashdata('error')): ?>
@@ -38,11 +38,8 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+                <input type="password" id="password" name="password" placeholder="Masukkan password" required>
                 </div>
-            </div>
 
             <div class="remember-forgot">
                 <label class="remember">
@@ -61,18 +58,20 @@
     </div>
 
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.toggle-password');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
-            } else {
-                passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
-            }
-        }
+        const userTab = document.getElementById('userTab');
+        const adminTab = document.getElementById('adminTab');
+
+        // Tab switching (tetap dipertahankan)
+        userTab.addEventListener('click', function() {
+            userTab.classList.add('active');
+            adminTab.classList.remove('active');
+            // Opsional: tambahkan window.location.href atau fungsi form switch di sini
+        });
+
+        adminTab.addEventListener('click', function() {
+            adminTab.classList.add('active');
+            userTab.classList.remove('active');
+        });
     </script>
 </body>
 </html>
