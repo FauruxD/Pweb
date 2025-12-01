@@ -200,7 +200,7 @@ $userFavorites = $userFavorites ?? [];
                     }
                 } else {
                     // poster lokal (nama file)
-                    $poster = base_url('assets/images/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
+                    $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
                 }
 
                 // apakah film sudah favorit user (jika $userFavorites disediakan)

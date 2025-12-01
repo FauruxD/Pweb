@@ -243,99 +243,107 @@ class Home extends BaseController
         return view('home/search', $data);
     }
 
-public function watch($id)
-{
-    // Ambil data film
-    $film = $this->filmModel->getFilmById($id);
+    // =========================================================================
+    // WATCH - Support Archive.org URL
+    // =========================================================================
+    public function watch($id)
+    {
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth/login');
+        }
 
-    if (!$film) {
-        return redirect()->to('/dashboard')->with('error', 'Film tidak ditemukan!');
-    }
+        // Ambil data film
+        $film = $this->filmModel->getFilmById($id);
 
-    // ========== ARCHIVE.ORG PLAYER ==========
-    // video_path = "steamboat-willie_1928"
-    if (!empty($film['video_path'])) {
-
-        // Player minimal, hanya video (tanpa halaman archive)
-        $embed = "https://archive.org/embed/{$film['video_path']}?ui=0&autoplay=1";
-
-    } else {
-        // Jika tidak ada, tidak bisa diputar
-        $embed = null;
-    }
-
-//  Jika video tidak muncul, Gunakan syntax di bawah  //
-
-    //    =>dd($embed);<=    //
-
-// // // // // // // // // // // // // // // // // // //
-
-    return view('home/watch', [
-        'film'  => $film,
-        'embed' => $embed,
-        'title' => $film['title'] . " – Watch Movie"
-    ]);
-}
- 
-public function detail($id)
-{
-    if (!$this->session->get('logged_in')) {
-        return redirect()->to('/auth/login');
-    }
-
-    // ===============================
-    // 1. Coba Ambil dari Database Lokal
-    // ===============================
-    $film = $this->filmModel->getFilmById($id);
-
-    // ===============================
-    // 2. Jika TIDAK ADA → ambil dari TMDB
-    // ===============================
-    if (!$film) {
-
-        // ambil film dari TMDB berdasarkan ID
-        $tmdb = $this->getMovieByIdFromTMDB($id);
-
-        if (!$tmdb) {
+        if (!$film) {
             return redirect()->to('/dashboard')->with('error', 'Film tidak ditemukan!');
         }
 
-        // konversi data TMDB menjadi bentuk yg sama dengan data lokal
-        $film = [
-            'id'          => $tmdb['id'],
-            'title'       => $tmdb['title'],
-            'poster_path' => $tmdb['poster_path'],
-            'genre'       => isset($tmdb['genres'][0]['name']) ? $tmdb['genres'][0]['name'] : 'Unknown',
-            'year'        => substr($tmdb['release_date'] ?? '0000', 0, 4),
-            'rating'      => $tmdb['vote_average'] ?? 0,
-            'description' => $tmdb['overview'] ?? '',
-            'is_tmdb'     => true
-        ];
-    } else {
-        $film['is_tmdb'] = false; // data lokal
+        // ========== ARCHIVE.ORG PLAYER ==========
+        // video_path bisa berupa:
+        // 1. Archive.org identifier: "steamboat-willie_1928"
+        // 2. Full URL: "https://archive.org/download/..."
+        
+        $embed = null;
+        
+        if (!empty($film['video_path'])) {
+            // Jika sudah full URL, gunakan langsung
+            if (strpos($film['video_path'], 'http') === 0) {
+                $embed = $film['video_path'];
+            } else {
+                // Jika hanya identifier, buat embed URL
+                $embed = "https://archive.org/embed/{$film['video_path']}";
+            }
+        }
+
+        return view('home/watch', [
+            'film'  => $film,
+            'embed' => $embed,
+            'title' => $film['title'] . " – Watch Movie"
+        ]);
     }
 
-    // ===============================
-    // 3. Bikin URL Poster
-    // ===============================
-    $poster = $film['is_tmdb']
-        ? $this->imageUrl . $film['poster_path']
-        : base_url('assets/images/posters/' . $film['poster_path']);
+    // =========================================================================
+    // DETAIL - Support TMDB & Local Films
+    // =========================================================================
+    public function detail($id)
+    {
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth/login');
+        }
 
-    // ===============================
-    // 4. Kirim ke View
-    // ===============================
-    $data = [
-        'title' => $film['title'] . ' - Detail Film',
-        'user'  => [
-            'email' => $this->session->get('email'),
-        ],
-        'film'  => $film,
-        'poster'=> $poster
-    ];
+        // ===============================
+        // 1. Coba Ambil dari Database Lokal
+        // ===============================
+        $film = $this->filmModel->getFilmById($id);
 
-    return view('home/detail', $data);
-}
+        // ===============================
+        // 2. Jika TIDAK ADA → ambil dari TMDB
+        // ===============================
+        if (!$film) {
 
+            // ambil film dari TMDB berdasarkan ID
+            $tmdb = $this->getMovieByIdFromTMDB($id);
+
+            if (!$tmdb) {
+                return redirect()->to('/dashboard')->with('error', 'Film tidak ditemukan!');
+            }
+
+            // konversi data TMDB menjadi bentuk yg sama dengan data lokal
+            $film = [
+                'id'          => $tmdb['id'],
+                'title'       => $tmdb['title'],
+                'poster_path' => $tmdb['poster_path'],
+                'genre'       => isset($tmdb['genres'][0]['name']) ? $tmdb['genres'][0]['name'] : 'Unknown',
+                'year'        => substr($tmdb['release_date'] ?? '0000', 0, 4),
+                'rating'      => $tmdb['vote_average'] ?? 0,
+                'description' => $tmdb['overview'] ?? '',
+                'is_tmdb'     => true
+            ];
+        } else {
+            $film['is_tmdb'] = false; // data lokal
+        }
+
+        // ===============================
+        // 3. ✅ FIX: Bikin URL Poster yang BENAR
+        // ===============================
+        $poster = $film['is_tmdb']
+            ? $this->imageUrl . $film['poster_path']
+            : base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg')); // ✅ FIXED!
+
+        // ===============================
+        // 4. Kirim ke View
+        // ===============================
+        $data = [
+            'title' => $film['title'] . ' - Detail Film',
+            'user'  => [
+                'email' => $this->session->get('email'),
+            ],
+            'film'  => $film,
+            'poster'=> $poster
+        ];
+
+        return view('home/detail', $data);
+    }
 
 }

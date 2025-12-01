@@ -14,12 +14,20 @@ class Watch extends BaseController
             'title'  => 'Night of the Living Dead (1968)',
             'year'   => '1968',
             'genre'  => 'Horror',
-            'desc'   => 'Film klasik public domain.',
-            'iframe' => 'https://archive.org/embed/night_of_the_living_dead', 
-            'poster' => '/assets/images/posters/notld.jpg'
+            'description' => 'Film klasik public domain.',
+            'rating' => 8.5
         ];
-        
 
-        return view('watch/watch', ['film' => $film]);
+        // Ambil user dari session
+        $user = session()->get('user');
+
+        $data = [
+            'title' => $film['title'] . ' - MOVIX',
+            'film' => $film,
+            'user' => $user,
+            'embed' => 'https://archive.org/embed/night_of_the_living_dead'
+        ];
+
+        return view('home/watch', $data);
     }
 }

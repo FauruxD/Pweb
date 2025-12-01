@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title><?= $title ?></title>
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/watch.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/main.css') ?>">
 
     <style>
         body {
@@ -56,10 +56,10 @@
             border: none;
         }
 
-        .film-info {
+        .film-infoo {
             margin-top: 25px;
         }
-        .film-info h1 {
+        .film-infoo h1 {
             margin: 0;
             font-size: 32px;
         }
@@ -74,7 +74,14 @@
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <a href="<?= base_url('dashboard') ?>" class="logo">MOVIX</a>
+    <div class="navbar-left">
+        <a href="<?= base_url('dashboard') ?>" class="logo">MOVIX</a>
+        <ul class="nav-links">
+            <li><a href="<?= base_url('dashboard') ?>">Film</a></li>
+            <li><a href="<?= base_url('genre') ?>">Genre</a></li>
+            <li><a href="<?= base_url('favorite') ?>">Favorit</a></li>
+        </ul>
+    </div>
 </nav>
 
 <!-- WATCH PAGE CONTENT -->
@@ -86,7 +93,7 @@
     </div>
 
     <!-- Film Info -->
-    <div class="film-info">
+    <div class="film-infoo">
         <h1><?= $film['title'] ?></h1>
         <div class="meta">
             <?= $film['year'] ?? '' ?> • 

@@ -35,6 +35,7 @@
             display: inline-block;
             margin-top: 20px;
             font-weight: bold;
+            text-decoration: none;
         }
         .btn-watch:hover {
             background: #ffd060;
@@ -64,26 +65,40 @@
 <!-- DETAIL CONTENT -->
 <div class="detail-container">
 
-    <img src="<?= $poster ?>" class="detail-poster">
+    <?php
+    // ✅ FIX: Build poster URL yang benar
+    // Jika $poster sudah disiapkan dari controller, gunakan langsung
+    // Jika belum, build dari film data
+    if (!isset($poster) || empty($poster)) {
+        if (isset($film['is_tmdb']) && $film['is_tmdb']) {
+            // Film dari TMDB
+            $imageUrl = 'https://image.tmdb.org/t/p/w500';
+            $poster = $imageUrl . ($film['poster_path'] ?? '');
+        } else {
+            // Film lokal - poster di public/uploads/posters/
+            $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg'));
+        }
+    }
+    ?>
+
+    <img src="<?= esc($poster) ?>" 
+         class="detail-poster"
+         onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
 
     <div class="detail-info">
-        <h1><?= $film['title'] ?></h1>
+        <h1><?= esc($film['title']) ?></h1>
 
         <div class="detail-meta">
-            <?= $film['year'] ?> • <?= $film['genre'] ?> • ⭐ <?= number_format($film['rating'],1) ?>
+            <?= esc($film['year']) ?> • <?= esc($film['genre']) ?> • ⭐ <?= number_format($film['rating'] ?? 0, 1) ?>
         </div>
 
         <p style="max-width:600px;">
-            <?= $film['description'] ?? 'Tidak ada sinopsis tersedia.' ?>
+            <?= esc($film['description'] ?? 'Tidak ada sinopsis tersedia.') ?>
         </p>
 
         <a href="<?= base_url('watch/' . $film['id']) ?>" class="btn-watch">▶ Watch Now</a>
     </div>
 </div>
-
-
-
-
 
 </body>
 </html>
