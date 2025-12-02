@@ -79,36 +79,33 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
 
     <!-- FILM GRID -->
     <div class="film-grid" id="fav-grid">
-    <?php if(empty($movies)): ?>
-        <div class="empty-favs">
-            <p>Belum ada film favorit.</p>
-            <p>Tambahkan film dari halaman detail.</p>
-        </div>
-    <?php else: ?>
-        <?php foreach($movies as $m):
-            $poster = isset($m['poster_path']) 
-                ? (strpos($m['poster_path'], '/') === 0 ? $tmdb_image_base . $m['poster_path'] : $m['poster_path']) 
-                : base_url('assets/images/no-poster.png');
-            $detailUrl = base_url('detail/' . $m['movie_id']);
-        ?>
-            <div class="film-card">
-                <img
-                    class="film-poster"
-                    src="<?= $poster ?>"
-                    style="cursor:pointer;"
-                    onclick="window.location.href='<?= $detailUrl ?>'"
-                    alt="<?= esc($m['title']) ?>"
-                >
-                <div class="film-info">
-                    <div class="film-title"><?= esc($m['title']) ?></div>
-                    <div class="film-meta">
-                        <span style="color:#9aa3b0;">Genre • Tahun</span>
+        <?php if(empty($movies)): ?>
+            <div class="empty-favs">
+                <p>Belum ada film favorit.</p>
+                <p>Tambahkan film dari halaman detail.</p>
+            </div>
+        <?php else: ?>
+            <?php foreach($movies as $m):
+                $poster = isset($m['poster_path']) 
+                    ? (strpos($m['poster_path'], '/') === 0 ? $tmdb_image_base . $m['poster_path'] : $m['poster_path']) 
+                    : base_url('assets/images/no-poster.png');
+                $detailUrl = base_url('detail/' . $m['movie_id']);
+            ?>
+                <div class="film-card">
+                    <img
+                        class="film-poster"
+                        src="<?= $poster ?>"
+                        style="cursor:pointer;"
+                        onclick="window.location.href='<?= $detailUrl ?>'"
+                        alt="<?= esc($m['title']) ?>"
+                    >
+                    <div class="film-info">
+                        <div class="film-title"><?= esc($m['title']) ?></div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
-</div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 
     <!-- REKOMENDASI -->
     <div class="reco-section">
