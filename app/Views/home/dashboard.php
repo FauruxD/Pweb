@@ -16,24 +16,18 @@ $userFavorites = $userFavorites ?? [];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title) ?></title>
 
-    <!-- CSRF (CodeIgniter 4) -->
     <meta name="csrf-name" content="<?= csrf_token() ?>">
     <meta name="csrf-hash" content="<?= csrf_hash() ?>">
 
-    <!-- CSS UTAMA -->
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css') ?>">
     <style>
-        /* Tambahan kecil styling untuk tombol favorite */
         .film-favorite { background: transparent; border: 0; font-size:18px; cursor:pointer; }
         .film-favorite.favorited { transform: scale(1.05); transition: .12s ease; }
     </style>
 </head>
 <body>
 
-<!-- ========================================================= -->
-<!--                           NAVBAR                          -->
-<!-- ========================================================= -->
-
+<!-- Navbar -->
 <nav class="navbar">
     <div class="navbar-left">
         <a href="<?= base_url('/dashboard') ?>" class="logo">MOVIX</a>
@@ -148,8 +142,8 @@ $userFavorites = $userFavorites ?? [];
         ?>
         <div class="trending-main">
             <img src="<?= esc($t_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-                 alt="<?= esc($t['title']) ?>"
-                 onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+                alt="<?= esc($t['title']) ?>"
+                onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
 
             <div class="trending-overlay">
                 <span class="trending-badge"><?= esc($t['vote_average']) ?></span>
@@ -169,8 +163,8 @@ $userFavorites = $userFavorites ?? [];
             ?>
                 <div class="trending-item">
                     <img src="<?= esc($tr_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-                         alt="<?= esc($tr['title']) ?>"
-                         onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+                        alt="<?= esc($tr['title']) ?>"
+                        onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
 
                     <span class="trending-item-badge"><?= esc($tr['vote_average']) ?></span>
 
@@ -190,7 +184,6 @@ $userFavorites = $userFavorites ?? [];
     <div class="film-grid" id="filmGrid">
         <?php foreach ($films as $film): ?>
             <?php
-                // buat poster (sama logic seperti di atas)
                 $poster = null;
                 if (isset($film['is_tmdb']) && $film['is_tmdb']) {
                     if (!empty($film['poster_path']) && strpos($film['poster_path'], 'http') === 0) {
@@ -199,19 +192,17 @@ $userFavorites = $userFavorites ?? [];
                         $poster = buildPosterUrl($imageUrl, $film['poster_path'] ?? '');
                     }
                 } else {
-                    // poster lokal (nama file)
                     $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
                 }
 
                 // apakah film sudah favorit user (jika $userFavorites disediakan)
                 $isFav = in_array($film['id'], $userFavorites ?? []) ? true : false;
 
-                // escape untuk passing ke JS
                 $jsTitle = addslashes($film['title'] ?? '');
                 $jsPoster = addslashes($poster ?? '');
             ?>
             <div class="film-card"
-             onclick="goDetail(<?= $film['id'] ?>, <?= isset($film['is_tmdb']) ? 1 : 0 ?>)>"
+            onclick="goDetail(<?= $film['id'] ?>, <?= isset($film['is_tmdb']) ? 1 : 0 ?>)>"
             data-id="<?= esc($film['id']) ?>"
             data-url="<?= base_url('detail/' . $film['id']) ?>"
             data-genre="<?= esc($film['genre'] ?? '') ?>"
@@ -258,10 +249,7 @@ $userFavorites = $userFavorites ?? [];
 
 </div>
 
-<!-- ========================================================= -->
-<!--                           FOOTER                          -->
-<!-- ========================================================= -->
-
+<!-- footer -->
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-section">
@@ -311,9 +299,6 @@ $userFavorites = $userFavorites ?? [];
     </div>
 </footer>
 
-<!-- ===================================================== -->
-<!--                     JAVASCRIPT                         -->
-<!-- ===================================================== -->
 
 <script>
 /* util: ambil CSRF dari meta */
@@ -330,10 +315,7 @@ window.addEventListener('click', function(e) {
     }
 });
 
-/* ======================================== */
-/*           SEARCH + FILTER LOGIC          */
-/* ======================================== */
-
+// Filter
 const filmGrid = document.getElementById("filmGrid");
 const searchInput = document.getElementById("searchInput");
 const genreFilter = document.getElementById("genreFilter");
@@ -363,6 +345,7 @@ function applyAll() {
     cards.forEach(card => {
         const title = (card.querySelector(".film-title")?.innerText || '').toLowerCase();
         const filmGenre = (card.dataset.genre || '').toLowerCase();
+        const filmGenres = filmGenre.split(',').map(g => g.trim()); // fix untuk multi-genre
         const filmYear = card.dataset.year || '';
         const filmRating = parseFloat(card.dataset.rating || 0);
 
@@ -370,7 +353,7 @@ function applyAll() {
 
         if (keyword && !title.includes(keyword) && !filmGenre.includes(keyword))
             visible = false;
-        if (genre && !filmGenre.includes(genre))
+        if (genre && !filmGenres.includes(genre))
             visible = false;
         if (year && filmYear !== year)
             visible = false;
@@ -403,7 +386,6 @@ function applyAll() {
     notFoundMsg.style.display = visibleCards.length === 0 ? "block" : "none";
 }
 
-// debounce kecil
 let debounceTimer;
 searchInput.addEventListener("keyup", (e) => {
     clearTimeout(debounceTimer);
@@ -422,16 +404,12 @@ searchInput.addEventListener("keydown", e => {
     }
 });
 
-/* ======================================== */
-/*           FAVORITE TOGGLE (AJAX)         */
-/* ======================================== */
-
-function toggleFavorite(movieId, title, poster, btn) {
-    // kirim CSRF dengan nama token dinamis (CI4 expects name => hash)
+// Favorite toggle
+function toggleFavorite(movieId, title, poster_path, btn) {
     const payload = {
         movie_id: movieId,
         title: title,
-        poster: poster
+        poster_path: poster_path
     };
     // sisipkan CSRF ke object payload
     payload[csrfName] = csrfHash;
@@ -478,11 +456,8 @@ function toggleFavorite(movieId, title, poster, btn) {
     });
 });
 
-// ======================================================
-// FIX: Klik poster → pindah ke halaman detail (TMDB + lokal)
-// ======================================================
+
 document.querySelectorAll('.film-card').forEach(card => {
-    // jangan override tombol favorite
     card.addEventListener('click', function (e) {
 
         // jika yang diklik tombol favorite → jangan pindah halaman
@@ -503,7 +478,6 @@ function goDetail(id, isTmdb) {
         window.location.href = "<?= base_url('detail/') ?>" + id;
     }
 }
-
 </script>
 </body>
 </html>

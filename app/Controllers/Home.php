@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\FilmModel;
+use App\Models\FavoriteModel;
 
 class Home extends BaseController
 {
@@ -71,7 +72,6 @@ class Home extends BaseController
 
         // Mapping TMDB → Standard format film untuk dashboard
         $mappedTMDB = array_map(function ($m) {
-
             $poster = $this->normalizePoster($m['poster_path'] ?? null);
 
             return [
@@ -98,6 +98,17 @@ class Home extends BaseController
             $t['poster_path'] = $this->normalizePoster($t['poster_path'] ?? null);
         }
 
+        // ========================================
+        // FAVORITE MOVIES FROM DB
+        // ========================================
+        $favModel = new FavoriteModel();
+        $userId = $this->session->get('user_id');
+        $userFavorites = [];
+        if ($userId) {
+            $userFavorites = $favModel->where('user_id', $userId)->findColumn('movie_id');
+            if (!is_array($userFavorites)) $userFavorites = [];
+        }
+
         $data = [
             'title'          => 'Beranda - Movix',
             'user'           => [
@@ -107,6 +118,7 @@ class Home extends BaseController
             'films'          => $allFilms,
             'trending_films' => $trending_films,
             'imageUrl'       => $this->imageUrl,
+            'userFavorites'  => $userFavorites,
         ];
 
         return view('home/dashboard', $data);
@@ -301,7 +313,6 @@ class Home extends BaseController
         // 2. Jika TIDAK ADA → ambil dari TMDB
         // ===============================
         if (!$film) {
-
             // ambil film dari TMDB berdasarkan ID
             $tmdb = $this->getMovieByIdFromTMDB($id);
 
@@ -325,11 +336,11 @@ class Home extends BaseController
         }
 
         // ===============================
-        // 3. ✅ FIX: Bikin URL Poster yang BENAR
+        // 3. FIX: Bikin URL Poster yang BENAR
         // ===============================
         $poster = $film['is_tmdb']
             ? $this->imageUrl . $film['poster_path']
-            : base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg')); // ✅ FIXED!
+            : base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg'));
 
         // ===============================
         // 4. Kirim ke View
@@ -345,5 +356,4 @@ class Home extends BaseController
 
         return view('home/detail', $data);
     }
-
 }

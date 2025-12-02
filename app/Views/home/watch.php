@@ -13,7 +13,6 @@
             color: #fff;
             font-family: Arial, sans-serif;
         }
-
         /* NAVBAR */
         .navbar {
             width: 100%;
@@ -34,30 +33,35 @@
             text-decoration: none;
         }
 
-        /* CONTENT */
+        /* FULLSCREEN VIDEO PAGE */
         .watch-container {
-            padding: 40px;
-            max-width: 1300px;
-            margin: auto;
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
         .video-box {
-            width: 100%;
-            aspect-ratio: 16/9;
+            width: 99vw;
+            height: 56.25vw;
+            max-height: 107vh;
             background: #111;
-            border-radius: 14px;
+            border-radius: 0;
             overflow: hidden;
-            box-shadow: 0 0 20px #000;
+            box-shadow: none;
+            position: relative;
         }
-
         iframe {
-            width: 100%;
+            width: 100vw;
             height: 100%;
+            min-height: 56.25vw; /* for aspect ratio */
             border: none;
+            display: block;
+            background: #000;
         }
-
         .film-infoo {
-            margin-top: 25px;
+            max-width: 100vw;
+            padding: 32px 42px;
+            margin: 0;
         }
         .film-infoo h1 {
             margin: 0;
@@ -65,7 +69,18 @@
         }
         .meta {
             color: #aaa;
-            margin: 10px 0;
+            margin: 12px 0 18px 0;
+        }
+        @media (max-width: 980px) {
+            .film-infoo { padding: 16px 14px; }
+            .video-box { height: 56vw; }
+            iframe    { min-height: 56vw; }
+        }
+        @media (max-width: 600px) {
+            .film-infoo { font-size: 14px; padding: 10px 2px; }
+            .film-infoo h1 { font-size: 20px; }
+            .video-box { height: 60vw; }
+            iframe    { min-height: 60vw; }
         }
     </style>
 </head>
@@ -75,16 +90,28 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="navbar-left">
-        <a href="<?= base_url('dashboard') ?>" class="logo">MOVIX</a>
+        <a href="<?= base_url('/dashboard') ?>" class="logo">MOVIX</a>
         <ul class="nav-links">
-            <li><a href="<?= base_url('dashboard') ?>">Film</a></li>
+            <li><a href="<?= base_url('/dashboard') ?>">Film</a></li>
             <li><a href="<?= base_url('genre') ?>">Genre</a></li>
-            <li><a href="<?= base_url('favorite') ?>">Favorit</a></li>
+            <li><a href="<?= base_url('favorite') ?>" class="active">Favorit</a></li>
         </ul>
     </div>
-</nav>
+    <div class="navbar-right">
+        <div class="user-profile" onclick="toggleUserMenu()">
+            <div class="user-avatar">
+                <?= strtoupper(substr(session('email'), 0, 1)) ?>
+            </div>
+            <div class="notification-badge"></div>
+        </div>
+        <div id="userMenu" class="user-menu">
+            <a href="<?= base_url('/') ?>">Ke Landing Page</a>
+            <a href="<?= base_url('auth/logout') ?>" class="logout">Logout</a>
+        </div>
+    </div>
+</nav>  
 
-<!-- WATCH PAGE CONTENT -->
+<!-- WATCH PAGE -->
 <div class="watch-container">
 
     <!-- Video Player -->
@@ -100,11 +127,24 @@
             <?= $film['genre'] ?? '' ?> • 
             ⭐ <?= number_format($film['rating'] ?? 0, 1) ?>
         </div>
-
         <p><?= $film['description'] ?? '' ?></p>
     </div>
 
 </div>
+
+<script>
+function toggleUserMenu() {
+    document.getElementById("userMenu").classList.toggle("show");
+}
+document.addEventListener("click", function(e) {
+    const menu = document.getElementById("userMenu");
+    const profile = document.querySelector(".user-profile");
+
+    if (!profile.contains(e.target)) {
+        menu.classList.remove("show");
+    }
+});
+</script>
 
 </body>
 </html>

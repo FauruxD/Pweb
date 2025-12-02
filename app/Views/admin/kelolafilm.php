@@ -384,7 +384,7 @@
                 <h2>Daftar Film</h2>
                 <p>Kelola Daftar Film</p>
             </div>
-            <button class="add-btn" onclick="openModal()">✨ Tambah Film</button>
+            <button class="add-btn" onclick="openModal()">✚ Tambah Film</button>
         </div>
 
         <div class="table-container">
@@ -433,13 +433,12 @@
 
             <form action="<?= base_url('admin/tambah-film') ?>" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label>Judul Film *</label>
+                    <label>Judul Film</label>
                     <input type="text" name="title" placeholder="Masukkan Judul Film" required>
                 </div>
 
-                <!-- BARU: Field Description -->
                 <div class="form-group">
-                    <label>Deskripsi Film *</label>
+                    <label>Deskripsi Film</label>
                     <textarea name="description" id="description" placeholder="Masukkan deskripsi singkat tentang film ini..." required maxlength="1000"></textarea>
                     <div class="char-counter">
                         <span id="charCount">0</span>/1000 karakter
@@ -447,12 +446,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Genre *</label>
+                    <label>Genre</label>
                     <input type="text" name="genre" placeholder="Action, Drama, Horror, dll" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Tahun Rilis *</label>
+                    <label>Tahun Rilis</label>
                     <input type="number" name="year" placeholder="2025" min="1900" max="2100" required>
                 </div>
 
@@ -462,37 +461,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Poster Film *</label>
+                    <label>Poster Film</label>
                     <input type="file" name="poster" class="file-input" accept="image/*" required>
                     <small class="help-text">Format: JPG, PNG, WEBP (Max 5MB)</small>
                 </div>
 
-                <!-- UPDATED: Video Path (URL) bukan upload -->
                 <div class="form-group">
-                    <label>Video URL (Archive.org) *</label>
+                    <label>Video URL</label>
                     <input type="url" name="video_path" placeholder="https://archive.org/download/example/video.mp4" required>
                     <small class="help-text">
                         Paste URL video dari Archive.org atau sumber lainnya<br>
-                        Contoh: https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4
                     </small>
                 </div>
 
-                <button type="submit" class="submit-btn">💾 SIMPAN FILM</button>
+                <button type="submit" class="submit-btn">SIMPAN FILM</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Character counter untuk description
-        const descriptionField = document.getElementById('description');
-        const charCount = document.getElementById('charCount');
-
-        if (descriptionField) {
-            descriptionField.addEventListener('input', function() {
-                charCount.textContent = this.value.length;
-            });
-        }
-
         function openModal() {
             document.getElementById('addFilmModal').classList.add('active');
         }

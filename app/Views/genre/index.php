@@ -109,7 +109,7 @@
 
         <!-- ROMANCE -->
         <div class="genre-card" onclick="window.location.href='<?= base_url('genre/'.$genres['romance']['id']) ?>'">
-            <img src="<?= base_url('assets/images/featured/3.jpg') ?>" class="genre-thumb">
+            <img src="<?= base_url('assets/images/featured/5.jpg') ?>" class="genre-thumb">
             <div class="genre-body">
                 <div class="genre-icon">💗</div>
                 <div class="genre-name"><?= $genres['romance']['name'] ?></div>
@@ -121,7 +121,7 @@
 
         <!-- ANIMASI -->
         <div class="genre-card" onclick="window.location.href='<?= base_url('genre/'.$genres['animasi']['id']) ?>'">
-            <img src="<?= base_url('assets/images/featured/1.jpg') ?>" class="genre-thumb">
+            <img src="<?= base_url('assets/images/featured/6.jpg') ?>" class="genre-thumb">
             <div class="genre-body">
                 <div class="genre-icon">🧩</div>
                 <div class="genre-name"><?= $genres['animasi']['name'] ?></div>
@@ -133,7 +133,7 @@
 
         <!-- DOKUMENTER -->
         <div class="genre-card" onclick="window.location.href='<?= base_url('genre/'.$genres['dokumenter']['id']) ?>'">
-            <img src="<?= base_url('assets/images/featured/3.jpg') ?>" class="genre-thumb">
+            <img src="<?= base_url('assets/images/featured/7.jpg') ?>" class="genre-thumb">
             <div class="genre-body">
                 <div class="genre-icon">📘</div>
                 <div class="genre-name"><?= $genres['dokumenter']['name'] ?></div>
@@ -145,7 +145,7 @@
 
         <!-- SCI-FI -->
         <div class="genre-card" onclick="window.location.href='<?= base_url('genre/'.$genres['scifi']['id']) ?>'">
-            <img src="<?= base_url('assets/images/posters/interstellar.jpg') ?>" class="genre-thumb">
+            <img src="<?= base_url('assets/images/featured/8.jpg') ?>" class="genre-thumb">
             <div class="genre-body">
                 <div class="genre-icon">🚀</div>
                 <div class="genre-name"><?= $genres['scifi']['name'] ?></div>

@@ -79,52 +79,49 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
 
     <!-- FILM GRID -->
     <div class="film-grid" id="fav-grid">
-
-        <?php if(empty($movies)): ?>
-            <div class="empty-favs">
-                <p>Belum ada film favorit.</p>
-                <p>Tambahkan film dari halaman detail.</p>
-            </div>
-        <?php else: ?>
-
-            <?php foreach($movies as $m): 
-                $poster = isset($m['poster']) 
-                    ? (strpos($m['poster'], '/') === 0 ? $tmdb_image_base.$m['poster'] : $m['poster']) 
-                    : base_url('assets/images/no-poster.png');
-            ?>
-                <div class="film-card">
-
-                    <img class="film-poster" src="<?= $poster ?>">
-
-                    <button class="film-favorite">♥</button>
-
-                    <div class="film-info">
-                        <div class="film-title"><?= esc($m['title']) ?></div>
-                        <div class="film-meta">
-                            <span style="color:#9aa3b0;">Genre • Tahun</span>
-
-                            <a class="btn-primary" href="<?= base_url('movie/'.$m['id']) ?>" style="text-decoration:none;">Detail</a>
-                        </div>
+    <?php if(empty($movies)): ?>
+        <div class="empty-favs">
+            <p>Belum ada film favorit.</p>
+            <p>Tambahkan film dari halaman detail.</p>
+        </div>
+    <?php else: ?>
+        <?php foreach($movies as $m):
+            $poster = isset($m['poster_path']) 
+                ? (strpos($m['poster_path'], '/') === 0 ? $tmdb_image_base . $m['poster_path'] : $m['poster_path']) 
+                : base_url('assets/images/no-poster.png');
+            $detailUrl = base_url('detail/' . $m['movie_id']);
+        ?>
+            <div class="film-card">
+                <img
+                    class="film-poster"
+                    src="<?= $poster ?>"
+                    style="cursor:pointer;"
+                    onclick="window.location.href='<?= $detailUrl ?>'"
+                    alt="<?= esc($m['title']) ?>"
+                >
+                <div class="film-info">
+                    <div class="film-title"><?= esc($m['title']) ?></div>
+                    <div class="film-meta">
+                        <span style="color:#9aa3b0;">Genre • Tahun</span>
                     </div>
-
                 </div>
-            <?php endforeach; ?>
-
-        <?php endif; ?>
-
-    </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
 
     <!-- REKOMENDASI -->
     <div class="reco-section">
-        <h3 style="color:#fff; margin-bottom:12px;">Rekomendasi Untukmu</h3>
-
+        <h2 style="color:#fff; margin-bottom:12px;">Rekomendasi Untukmu</h2>
+        <p>Rekomendasi Film Untuk Anda</p>
         <div class="reco-list">
             <?php if(!empty($recommendations)): ?>
-                <?php foreach($recommendations as $r): ?>
-                    <?php $rposter = $tmdb_image_base . $r['poster_path']; ?>
-
+                <?php foreach($recommendations as $r): 
+                    $rposter = $tmdb_image_base . $r['poster_path'];
+                    $detailUrl = base_url('detail/' . $r['id']);
+                ?>
                     <div class="reco-card">
-                        <img src="<?= $rposter ?>">
+                        <img src="<?= $rposter ?>" style="cursor:pointer;" onclick="window.location.href='<?= $detailUrl ?>'" alt="<?= esc($r['title'] ?? $r['name']) ?>">
                         <div style="color:#fff; font-size:13px; margin-top:6px;">
                             <?= esc($r['title'] ?? $r['name']) ?>
                         </div>

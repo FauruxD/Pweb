@@ -8,5 +8,5 @@ class FavoriteModel extends Model
 {
     protected $table = 'favorites';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'movie_id', 'title', 'poster'];
+    protected $allowedFields = ['user_id', 'movie_id', 'title', 'poster_path'];
 }

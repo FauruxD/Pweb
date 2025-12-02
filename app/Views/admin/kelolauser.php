@@ -282,7 +282,6 @@
                 <h2>Daftar User</h2>
                 <p>Kelola Pengguna</p>
             </div>
-            <button class="add-btn" onclick="window.location.href='<?= base_url('auth/register') ?>'">✚ Tambah Film</button>
         </div>
 
         <div class="table-container">
