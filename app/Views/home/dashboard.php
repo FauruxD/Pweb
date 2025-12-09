@@ -1,11 +1,6 @@
 <?php
-// dashboard.php
-// Pastikan $title, $user, $films, $trending_films, $imageUrl tersedia dari controller
 if (!isset($imageUrl)) $imageUrl = 'https://image.tmdb.org/t/p/w500';
 
-// (Opsional) $userFavorites = array of movie_id yang diambil dari DB untuk menandai favorite pada load
-// Contoh controller: $data['userFavorites'] = $favModel->where('user_id', $userId)->findColumn('movie_id');
-// Jika tidak ada, file masih bekerja tanpa error.
 $userFavorites = $userFavorites ?? [];
 
 ?>
@@ -57,10 +52,6 @@ $userFavorites = $userFavorites ?? [];
         </div>
     </div>
 </nav>
-
-<!-- ========================================================= -->
-<!--                        MAIN CONTENT                        -->
-<!-- ========================================================= -->
 
 <div class="main-content">
 
@@ -121,62 +112,60 @@ $userFavorites = $userFavorites ?? [];
     </div>
 
     <!-- Trending -->
-    <?php if (!empty($trending_films)): ?>
-    <div class="section-header"><h2>Trending Sekarang</h2></div>
+<?php if (!empty($trending_films)): ?>
+<div class="section-header"><h2>Trending Sekarang</h2></div>
 
-    <div class="trending-container">
-        <?php
-            // ambil item utama trending
-            $t = $trending_films[0];
-            // fungsi kecil untuk membuat URL poster yang benar
-            function buildPosterUrl($base, $path) {
-                if (empty($path)) return null;
-                // jika sudah URL penuh
-                if (strpos($path, 'http') === 0) return $path;
-                // jika path dimulai dengan slash (mis: /abc.jpg) -> gabungkan
-                if ($path[0] === '/') return rtrim($base, '/') . $path;
-                // jika path tidak diawali slash -> tambahkan slash
-                return rtrim($base, '/') . '/' . $path;
-            }
-            $t_poster = buildPosterUrl($imageUrl, $t['poster_path'] ?? '');
-        ?>
-        <div class="trending-main">
-            <img src="<?= esc($t_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-                alt="<?= esc($t['title']) ?>"
-                onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+<div class="trending-container">
+    <?php
+        $t = $trending_films[0];
+        function buildPosterUrl($base, $path) {
+            if (empty($path)) return null;
+            if (strpos($path, 'http') === 0) return $path;
+            if ($path[0] === '/') return rtrim($base, '/') . $path;
+            return rtrim($base, '/') . '/' . $path;
+        }
+        $t_poster = buildPosterUrl($imageUrl, $t['poster_path'] ?? '');
+    ?>
+    <div class="trending-main" onclick="window.location.href='<?= base_url('detail/' . $t['id']) ?>';" style="cursor: pointer;">
+        <img src="<?= esc($t_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
+            alt="<?= esc($t['title']) ?>"
+            onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
 
-            <div class="trending-overlay">
-                <span class="trending-badge"><?= esc($t['vote_average']) ?></span>
-                <span class="trending-badge">Trending</span>
+        <div class="trending-overlay">
+            <span class="trending-badge"><?= esc($t['vote_average']) ?></span>
+            <span class="trending-badge">Trending</span>
 
-                <h3><?= esc($t['title']) ?></h3>
-                <p><?= isset($t['release_date']) ? substr($t['release_date'], 0, 4) : '' ?></p>
+            <h3><?= esc($t['title']) ?></h3>
+            <p><?= isset($t['release_date']) ? substr($t['release_date'], 0, 4) : '' ?></p>
 
-                <a href="#" class="watch-btn">▶ Watch Now</a>
-            </div>
-        </div>
-
-        <div class="trending-list">
-            <?php for ($i = 1; $i < 4 && $i < count($trending_films); $i++): 
-                $tr = $trending_films[$i];
-                $tr_poster = buildPosterUrl($imageUrl, $tr['poster_path'] ?? '');
-            ?>
-                <div class="trending-item">
-                    <img src="<?= esc($tr_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-                        alt="<?= esc($tr['title']) ?>"
-                        onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
-
-                    <span class="trending-item-badge"><?= esc($tr['vote_average']) ?></span>
-
-                    <div class="trending-item-overlay">
-                        <h4><?= esc($tr['title']) ?></h4>
-                        <p><?= isset($tr['release_date']) ? substr($tr['release_date'], 0, 4) : '' ?></p>
-                    </div>
-                </div>
-            <?php endfor; ?>
+            <a href="<?= base_url('detail/' . $t['id']) ?>" 
+                class="watch-btn" 
+                onclick="event.stopPropagation();">▶ Watch Now</a>
         </div>
     </div>
-    <?php endif; ?>
+
+    <div class="trending-list">
+        <?php for ($i = 1; $i < 4 && $i < count($trending_films); $i++): 
+            $tr = $trending_films[$i];
+            $tr_poster = buildPosterUrl($imageUrl, $tr['poster_path'] ?? '');
+        ?>
+            <!-- UPDATED: Tambah onclick untuk redirect ke detail_tmdb -->
+            <div class="trending-item" onclick="window.location.href='<?= base_url('detail/' . $tr['id']) ?>';" style="cursor: pointer;">
+                <img src="<?= esc($tr_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
+                    alt="<?= esc($tr['title']) ?>"
+                    onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+
+                <span class="trending-item-badge"><?= esc($tr['vote_average']) ?></span>
+
+                <div class="trending-item-overlay">
+                    <h4><?= esc($tr['title']) ?></h4>
+                    <p><?= isset($tr['release_date']) ? substr($tr['release_date'], 0, 4) : '' ?></p>
+                </div>
+            </div>
+        <?php endfor; ?>
+    </div>
+</div>
+<?php endif; ?>
 
     <!-- Semua Film -->
     <div class="section-header"><h2>Semua Film</h2></div>
@@ -301,7 +290,6 @@ $userFavorites = $userFavorites ?? [];
 
 
 <script>
-/* util: ambil CSRF dari meta */
 const csrfName = document.querySelector('meta[name="csrf-name"]').content;
 let csrfHash = document.querySelector('meta[name="csrf-hash"]').content;
 
@@ -404,14 +392,12 @@ searchInput.addEventListener("keydown", e => {
     }
 });
 
-// Favorite toggle
 function toggleFavorite(movieId, title, poster_path, btn) {
     const payload = {
         movie_id: movieId,
         title: title,
         poster_path: poster_path
     };
-    // sisipkan CSRF ke object payload
     payload[csrfName] = csrfHash;
 
     fetch("<?= base_url('/favorite/toggle') ?>", {
@@ -423,7 +409,6 @@ function toggleFavorite(movieId, title, poster_path, btn) {
         body: JSON.stringify(payload)
     })
     .then(res => {
-        // jika server mengembalikan header CSRF baru, update hash (CI4 rotate token)
         const newCsrf = res.headers.get('X-CSRF-Hash');
         if (newCsrf) {
             csrfHash = newCsrf;
@@ -460,14 +445,12 @@ function toggleFavorite(movieId, title, poster_path, btn) {
 document.querySelectorAll('.film-card').forEach(card => {
     card.addEventListener('click', function (e) {
 
-        // jika yang diklik tombol favorite → jangan pindah halaman
         if (e.target.closest(".film-favorite")) return;
 
         const id = this.dataset.id;
 
         if (!id) return;
 
-        // arahkan ke halaman detail
         window.location.href = "<?= base_url('detail') ?>/" + id;
     });
 });

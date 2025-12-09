@@ -467,10 +467,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Video URL</label>
-                    <input type="url" name="video_path" placeholder="https://archive.org/download/example/video.mp4" required>
+                    <label>Video Path</label>
+                    <input type="text" name="video_path" placeholder="dragon-ball" required>
                     <small class="help-text">
-                        Paste URL video dari Archive.org atau sumber lainnya<br>
+                        Masukkan identifier video dari Archive.org (contoh: dragon-ball)
                     </small>
                 </div>
 

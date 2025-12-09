@@ -32,8 +32,6 @@
             color: #f39c12;
             text-decoration: none;
         }
-
-        /* FULLSCREEN VIDEO PAGE */
         .watch-container {
             max-width: 100vw;
             margin: 0;
@@ -41,8 +39,8 @@
             box-sizing: border-box;
         }
         .video-box {
-            width: 99vw;
-            height: 56.25vw;
+            width: 100%;
+            height: 100%;
             max-height: 107vh;
             background: #111;
             border-radius: 0;
@@ -52,8 +50,8 @@
         }
         iframe {
             width: 100vw;
-            height: 100%;
-            min-height: 56.25vw; /* for aspect ratio */
+            height: 45vw;
+            max-height: 56.25vw; 
             border: none;
             display: block;
             background: #000;

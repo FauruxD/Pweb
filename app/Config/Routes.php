@@ -49,6 +49,8 @@ $routes->get('/watch/(:any)', 'Home::watch/$1');
 $routes->get('/detail/(:num)', 'Home::detail/$1');
 $routes->get('/detail/(:num)', 'Home::detail/$1');
 $routes->get('/detail_tmdb/(:num)', 'Home::detailTmdb/$1');
+$routes->get('/watch/tmdb/(:num)', 'Watch::tmdb/$1');
+
 
 
 

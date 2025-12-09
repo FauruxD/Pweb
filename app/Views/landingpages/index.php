@@ -11,9 +11,6 @@
 
 <body>
 
-    <!-- =============================== -->
-    <!-- HERO SECTION -->
-    <!-- =============================== -->
     <section class="hero">
         <div class="hero-content">
             <span class="tagline">Platform Streaming Film Terbaik</span>
@@ -25,14 +22,10 @@
 
             <div class="hero-buttons">
                 <a href="/auth/login" class="btn-primary">▶ Mulai Menonton</a>
-                <a href="#info" class="btn-secondary">Info Lengkap</a>
             </div>
         </div>
     </section>
 
-    <!-- =============================== -->
-    <!-- FEATURED MOVIES -->
-    <!-- =============================== -->
     <section class="featured">
         <h2>Film Unggulan</h2>
         <p>Pilihan terbaik minggu ini yang wajib kamu tonton</p>

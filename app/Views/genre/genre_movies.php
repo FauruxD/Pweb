@@ -66,10 +66,8 @@
 
 </div>
 
-<!-- KETIKA TIDAK ADA DATA -->
 <div id="notFound" class="not-found">Tidak ada film ditemukan...</div>
 
-<!-- FOOTER -->
 <footer class="footer">
     <div class="footer-bottom">© 2025 Movix. All rights reserved.</div>
 </footer>

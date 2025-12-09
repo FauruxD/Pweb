@@ -25,9 +25,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
 </head>
 <body>
 
-<!-- ========================================================= -->
-<!--                           NAVBAR                          -->
-<!-- ========================================================= -->
 
 <nav class="navbar">
     <div class="navbar-left">
@@ -45,7 +42,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
             <input type="text" placeholder="Cari film..." id="searchInput">
         </div>
 
-        <!-- ✔ FIX: gunakan session email -->
         <div class="user-profile" onclick="toggleUserMenu()">
             <div class="user-avatar">
                 <?= strtoupper(substr(session('email'), 0, 1)) ?>
@@ -60,9 +56,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
     </div>
 </nav>
 
-<!-- ========================================================= -->
-<!--                        MAIN CONTENT                        -->
-<!-- ========================================================= -->
 
 <div class="main-content">
 
@@ -77,7 +70,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
         </div>
     </div>
 
-    <!-- FILM GRID -->
     <div class="film-grid" id="fav-grid">
         <?php if(empty($movies)): ?>
             <div class="empty-favs">
@@ -107,7 +99,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
         <?php endif; ?>
     </div>
 
-    <!-- REKOMENDASI -->
     <div class="reco-section">
         <h2 style="color:#fff; margin-bottom:12px;">Rekomendasi Untukmu</h2>
         <p>Rekomendasi Film Untuk Anda</p>

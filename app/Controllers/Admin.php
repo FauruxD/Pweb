@@ -77,13 +77,13 @@ class Admin extends BaseController
 
         $validation = \Config\Services::validation();
 
-        // UPDATED: Validasi baru - description required, video_path harus URL, poster required
+        // UPDATED: video_path sekarang text biasa, bukan URL, deskripsi tanpa minimal karakter
         $validation->setRules([
             'title' => 'required|min_length[1]',
-            'description' => 'required|min_length[10]', // BARU: Description wajib
+            'description' => 'required', // UBAH: Hapus min_length
             'genre' => 'required',
             'year' => 'required|integer',
-            'video_path' => 'required|valid_url', // BARU: Video path harus URL valid
+            'video_path' => 'required|min_length[3]|alpha_dash', // UBAH: Text biasa, hanya huruf, angka, dash, underscore
             'poster' => 'uploaded[poster]|max_size[poster,5120]|ext_in[poster,jpg,jpeg,png,webp]'
         ]);
 
@@ -91,11 +91,10 @@ class Admin extends BaseController
             return redirect()->back()->withInput()->with('error', 'Validasi gagal: ' . implode(', ', $validation->getErrors()));
         }
 
-        // UPDATED: Upload Poster dengan debugging
+        // Upload Poster
         $posterFile = $this->request->getFile('poster');
-        $posterName = 'placeholder.jpg'; // Default jika gagal
+        $posterName = 'placeholder.jpg';
 
-        // DEBUG: Log informasi file
         log_message('info', 'Poster file received: ' . ($posterFile ? 'YES' : 'NO'));
         
         if ($posterFile) {
@@ -106,17 +105,14 @@ class Admin extends BaseController
         }
 
         if ($posterFile && $posterFile->isValid() && !$posterFile->hasMoved()) {
-            // Generate random name untuk mencegah konflik
             $posterName = $posterFile->getRandomName();
             
-            // Pastikan folder exists
             $posterPath = ROOTPATH . 'public/uploads/posters';
             if (!is_dir($posterPath)) {
                 mkdir($posterPath, 0777, true);
                 log_message('info', 'Created directory: ' . $posterPath);
             }
             
-            // Move file
             try {
                 if ($posterFile->move($posterPath, $posterName)) {
                     log_message('info', '✅ Poster saved successfully: ' . $posterName);
@@ -132,13 +128,19 @@ class Admin extends BaseController
             log_message('error', '❌ Poster file validation failed or already moved');
         }
 
-        // UPDATED: Data baru dengan description dan video_path
+        // UPDATED: Ambil video_path sebagai text identifier saja
+        $videoIdentifier = $this->request->getPost('video_path');
+        
+        // Bersihkan input (hapus spasi, lowercase, dll)
+        $videoIdentifier = strtolower(trim($videoIdentifier));
+        $videoIdentifier = preg_replace('/[^a-z0-9\-_]/', '', $videoIdentifier);
+
         $data = [
             'title' => $this->request->getPost('title'),
-            'description' => $this->request->getPost('description'), // BARU
+            'description' => $this->request->getPost('description'),
             'genre' => $this->request->getPost('genre'),
             'year' => $this->request->getPost('year'),
-            'video_path' => $this->request->getPost('video_path'), // BARU: URL dari archive.org
+            'video_path' => $videoIdentifier, // UBAH: Simpan hanya identifier
             'poster_path' => $posterName,
             'rating' => $this->request->getPost('rating') ?? 0.0,
             'created_at' => date('Y-m-d H:i:s')
@@ -162,7 +164,6 @@ class Admin extends BaseController
             return redirect()->to('/admin/kelolafilm')->with('error', 'Film tidak ditemukan!');
         }
 
-        // UPDATED: Tidak perlu delete video file karena sekarang menggunakan URL
         // Delete poster file only
         if (!empty($film['poster_path']) && 
             $film['poster_path'] !== 'placeholder.jpg' && 
