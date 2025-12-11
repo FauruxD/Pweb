@@ -10,19 +10,10 @@ class Home extends BaseController
     protected $filmModel;
     protected $session;
 
-    protected $apiKey;
-    protected $baseUrl;
-    protected $imageUrl;
-
     public function __construct()
     {
         $this->filmModel = new FilmModel();
         $this->session = \Config\Services::session();
-
-        // Ambil env
-        $this->apiKey   = getenv('TMDB_API_KEY');
-        $this->baseUrl  = getenv('TMDB_BASE_URL');
-        $this->imageUrl = rtrim(getenv('TMDB_IMAGE_URL'), '/');
     }
 
     public function index()
@@ -31,17 +22,6 @@ class Home extends BaseController
             return redirect()->to('/dashboard');
         }
         return redirect()->to('/auth/login');
-    }
-
-    /* =========================================================================
-       FIX TERPENTING: pastikan poster TMDB selalu memiliki leading slash "/"
-       ========================================================================= */
-    private function normalizePoster($poster)
-    {
-        if (!$poster) return null;
-        if (strpos($poster, 'http') === 0) return $poster; // jika sudah full URL
-        if ($poster[0] !== '/') return '/' . $poster;
-        return $poster;
     }
 
     // =========================================================================
@@ -53,50 +33,14 @@ class Home extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // LOCAL MOVIES
-        $localFilms = $this->filmModel->getAllFilms();
+        // Ambil semua film dari database lokal
+        $allFilms = $this->filmModel->getAllFilms();
 
-        // TMDB POPULAR MOVIES
-        $tmdbFilms = $this->cachedRequest("popular_movies", function () {
-            return $this->getPopularFromTMDB();
-        });
-
-        // Tambahkan Joker (contoh by ID)
-        $jokerMovie = $this->cachedRequest("movie_475557", function () {
-            return $this->getMovieByIdFromTMDB(475557);
-        });
-
-        if (!empty($jokerMovie)) {
-            $tmdbFilms[] = $jokerMovie;
-        }
-
-        // Mapping TMDB → Standard format film untuk dashboard
-        $mappedTMDB = array_map(function ($m) {
-            $poster = $this->normalizePoster($m['poster_path'] ?? null);
-
-            return [
-                'id'          => $m['id'] ?? null,
-                'title'       => $m['title'] ?? 'No Title',
-                'poster_path' => $poster,
-                'genre'       => 'TMDB',
-                'year'        => substr($m['release_date'] ?? '0000', 0, 4),
-                'rating'      => $m['vote_average'] ?? 0,
-                'is_tmdb'     => true
-            ];
-        }, $tmdbFilms);
-
-        // Gabungkan local + TMDB
-        $allFilms = array_merge($localFilms, $mappedTMDB);
-
-        // TRENDING MOVIES
-        $trending_films = $this->cachedRequest("trending_movies", function () {
-            return $this->getTrendingFromTMDB();
-        });
-
-        // Normalisasi poster trending
-        foreach ($trending_films as &$t) {
-            $t['poster_path'] = $this->normalizePoster($t['poster_path'] ?? null);
-        }
+        // Ambil film trending (misalnya berdasarkan rating tertinggi)
+        $trending_films = $this->filmModel
+            ->orderBy('rating', 'DESC')
+            ->limit(6)
+            ->findAll();
 
         // ========================================
         // FAVORITE MOVIES FROM DB
@@ -117,85 +61,10 @@ class Home extends BaseController
             ],
             'films'          => $allFilms,
             'trending_films' => $trending_films,
-            'imageUrl'       => $this->imageUrl,
             'userFavorites'  => $userFavorites,
         ];
 
         return view('home/dashboard', $data);
-    }
-
-    // =========================================================================
-    // CACHE FIX — mencegah cache kosong membuat TMDB hilang
-    // =========================================================================
-    private function cachedRequest($key, $callback, $duration = 300)
-    {
-        $cacheFile = WRITEPATH . "cache/{$key}.json";
-
-        if (file_exists($cacheFile)) {
-
-            $json = json_decode(file_get_contents($cacheFile), true);
-
-            // File valid → gunakan cache
-            if (!empty($json) && (time() - filemtime($cacheFile) < $duration)) {
-                return $json;
-            }
-        }
-
-        // Fetch ulang jika cache rusak/kosong
-        $data = $callback();
-
-        // Tulis cache hanya jika data valid
-        if (!empty($data)) {
-            file_put_contents($cacheFile, json_encode($data));
-        }
-
-        return $data;
-    }
-
-    // =========================================================================
-    // cURL REQUEST
-    // =========================================================================
-    private function curlGet($url)
-    {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL            => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_TIMEOUT        => 2,
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => 0,
-        ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        return $response ?: null;
-    }
-
-    // =========================================================================
-    // TMDB API
-    // =========================================================================
-    private function getPopularFromTMDB()
-    {
-        $url = "{$this->baseUrl}/movie/popular?api_key={$this->apiKey}&language=id-ID&page=1";
-        $result = json_decode($this->curlGet($url), true);
-        return $result['results'] ?? [];
-    }
-
-    private function getTrendingFromTMDB()
-    {
-        $url = "{$this->baseUrl}/trending/movie/week?api_key={$this->apiKey}";
-        $result = json_decode($this->curlGet($url), true);
-
-        return array_slice($result['results'] ?? [], 0, 6);
-    }
-
-    private function getMovieByIdFromTMDB($id)
-    {
-        $url = "{$this->baseUrl}/movie/{$id}?api_key={$this->apiKey}&language=id-ID";
-        return json_decode($this->curlGet($url), true);
     }
 
     // =========================================================================
@@ -296,7 +165,7 @@ class Home extends BaseController
     }
 
     // =========================================================================
-    // DETAIL - Support TMDB & Local Films
+    // DETAIL - Film Lokal
     // =========================================================================
     public function detail($id)
     {
@@ -304,47 +173,16 @@ class Home extends BaseController
             return redirect()->to('/auth/login');
         }
 
-        // ===============================
-        // 1. Coba Ambil dari Database Lokal
-        // ===============================
+        // Ambil film dari database lokal
         $film = $this->filmModel->getFilmById($id);
 
-        // ===============================
-        // 2. Jika TIDAK ADA → ambil dari TMDB
-        // ===============================
         if (!$film) {
-            // ambil film dari TMDB berdasarkan ID
-            $tmdb = $this->getMovieByIdFromTMDB($id);
-
-            if (!$tmdb) {
-                return redirect()->to('/dashboard')->with('error', 'Film tidak ditemukan!');
-            }
-
-            // konversi data TMDB menjadi bentuk yg sama dengan data lokal
-            $film = [
-                'id'          => $tmdb['id'],
-                'title'       => $tmdb['title'],
-                'poster_path' => $tmdb['poster_path'],
-                'genre'       => isset($tmdb['genres'][0]['name']) ? $tmdb['genres'][0]['name'] : 'Unknown',
-                'year'        => substr($tmdb['release_date'] ?? '0000', 0, 4),
-                'rating'      => $tmdb['vote_average'] ?? 0,
-                'description' => $tmdb['overview'] ?? '',
-                'is_tmdb'     => true
-            ];
-        } else {
-            $film['is_tmdb'] = false; // data lokal
+            return redirect()->to('/dashboard')->with('error', 'Film tidak ditemukan!');
         }
 
-        // ===============================
-        // 3. FIX: Bikin URL Poster yang BENAR
-        // ===============================
-        $poster = $film['is_tmdb']
-            ? $this->imageUrl . $film['poster_path']
-            : base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg'));
+        // URL Poster lokal
+        $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'placeholder.jpg'));
 
-        // ===============================
-        // 4. Kirim ke View
-        // ===============================
         $data = [
             'title' => $film['title'] . ' - Detail Film',
             'user'  => [

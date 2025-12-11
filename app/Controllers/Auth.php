@@ -76,11 +76,21 @@ class Auth extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $remember = $this->request->getPost('remember');
+        $loginType = $this->request->getPost('login_type'); // Ambil tipe login dari form
 
         $user = $this->userModel->verifyPassword($email, $password);
 
         if (!$user) {
             return redirect()->back()->withInput()->with('error', 'Email atau password salah!');
+        }
+
+        // Validasi role berdasarkan tab yang dipilih
+        if ($loginType === 'user' && $user['role'] !== 'User') {
+            return redirect()->back()->withInput()->with('error', 'Anda tidak memiliki akses sebagai User!');
+        }
+
+        if ($loginType === 'admin' && $user['role'] !== 'Admin') {
+            return redirect()->back()->withInput()->with('error', 'Anda tidak memiliki akses sebagai Admin!');
         }
 
         $sessionData = [

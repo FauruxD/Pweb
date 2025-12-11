@@ -1,8 +1,5 @@
 <?php
-if (!isset($imageUrl)) $imageUrl = 'https://image.tmdb.org/t/p/w500';
-
 $userFavorites = $userFavorites ?? [];
-
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -112,60 +109,53 @@ $userFavorites = $userFavorites ?? [];
     </div>
 
     <!-- Trending -->
-<?php if (!empty($trending_films)): ?>
-<div class="section-header"><h2>Trending Sekarang</h2></div>
+    <?php if (!empty($trending_films)): ?>
+    <div class="section-header"><h2>Film Trending</h2></div>
 
-<div class="trending-container">
-    <?php
-        $t = $trending_films[0];
-        function buildPosterUrl($base, $path) {
-            if (empty($path)) return null;
-            if (strpos($path, 'http') === 0) return $path;
-            if ($path[0] === '/') return rtrim($base, '/') . $path;
-            return rtrim($base, '/') . '/' . $path;
-        }
-        $t_poster = buildPosterUrl($imageUrl, $t['poster_path'] ?? '');
-    ?>
-    <div class="trending-main" onclick="window.location.href='<?= base_url('detail/' . $t['id']) ?>';" style="cursor: pointer;">
-        <img src="<?= esc($t_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-            alt="<?= esc($t['title']) ?>"
-            onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+    <div class="trending-container">
+        <?php
+            $t = $trending_films[0];
+            $t_poster = base_url('uploads/posters/' . ($t['poster_path'] ?? 'placeholder.jpg'));
+        ?>
+        <div class="trending-main" onclick="window.location.href='<?= base_url('detail/' . $t['id']) ?>';" style="cursor: pointer;">
+            <img src="<?= esc($t_poster) ?>"
+                alt="<?= esc($t['title']) ?>"
+                onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
 
-        <div class="trending-overlay">
-            <span class="trending-badge"><?= esc($t['vote_average']) ?></span>
-            <span class="trending-badge">Trending</span>
+            <div class="trending-overlay">
+                <span class="trending-badge"><?= number_format($t['rating'] ?? 0, 1) ?></span>
+                <span class="trending-badge">Trending</span>
 
-            <h3><?= esc($t['title']) ?></h3>
-            <p><?= isset($t['release_date']) ? substr($t['release_date'], 0, 4) : '' ?></p>
+                <h3><?= esc($t['title']) ?></h3>
+                <p><?= esc($t['year'] ?? '') ?></p>
 
-            <a href="<?= base_url('detail/' . $t['id']) ?>" 
-                class="watch-btn" 
-                onclick="event.stopPropagation();">▶ Watch Now</a>
+                <a href="<?= base_url('detail/' . $t['id']) ?>" 
+                    class="watch-btn" 
+                    onclick="event.stopPropagation();">▶ Watch Now</a>
+            </div>
+        </div>
+
+        <div class="trending-list">
+            <?php for ($i = 1; $i < 4 && $i < count($trending_films); $i++): 
+                $tr = $trending_films[$i];
+                $tr_poster = base_url('uploads/posters/' . ($tr['poster_path'] ?? 'placeholder.jpg'));
+            ?>
+                <div class="trending-item" onclick="window.location.href='<?= base_url('detail/' . $tr['id']) ?>';" style="cursor: pointer;">
+                    <img src="<?= esc($tr_poster) ?>"
+                        alt="<?= esc($tr['title']) ?>"
+                        onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
+
+                    <span class="trending-item-badge"><?= number_format($tr['rating'] ?? 0, 1) ?></span>
+
+                    <div class="trending-item-overlay">
+                        <h4><?= esc($tr['title']) ?></h4>
+                        <p><?= esc($tr['year'] ?? '') ?></p>
+                    </div>
+                </div>
+            <?php endfor; ?>
         </div>
     </div>
-
-    <div class="trending-list">
-        <?php for ($i = 1; $i < 4 && $i < count($trending_films); $i++): 
-            $tr = $trending_films[$i];
-            $tr_poster = buildPosterUrl($imageUrl, $tr['poster_path'] ?? '');
-        ?>
-            <!-- UPDATED: Tambah onclick untuk redirect ke detail_tmdb -->
-            <div class="trending-item" onclick="window.location.href='<?= base_url('detail/' . $tr['id']) ?>';" style="cursor: pointer;">
-                <img src="<?= esc($tr_poster ?: base_url('assets/images/placeholder.jpg')) ?>"
-                    alt="<?= esc($tr['title']) ?>"
-                    onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>';">
-
-                <span class="trending-item-badge"><?= esc($tr['vote_average']) ?></span>
-
-                <div class="trending-item-overlay">
-                    <h4><?= esc($tr['title']) ?></h4>
-                    <p><?= isset($tr['release_date']) ? substr($tr['release_date'], 0, 4) : '' ?></p>
-                </div>
-            </div>
-        <?php endfor; ?>
-    </div>
-</div>
-<?php endif; ?>
+    <?php endif; ?>
 
     <!-- Semua Film -->
     <div class="section-header"><h2>Semua Film</h2></div>
@@ -173,52 +163,39 @@ $userFavorites = $userFavorites ?? [];
     <div class="film-grid" id="filmGrid">
         <?php foreach ($films as $film): ?>
             <?php
-                $poster = null;
-                if (isset($film['is_tmdb']) && $film['is_tmdb']) {
-                    if (!empty($film['poster_path']) && strpos($film['poster_path'], 'http') === 0) {
-                        $poster = $film['poster_path'];
-                    } else {
-                        $poster = buildPosterUrl($imageUrl, $film['poster_path'] ?? '');
-                    }
-                } else {
-                    $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
-                }
-
-                // apakah film sudah favorit user (jika $userFavorites disediakan)
-                $isFav = in_array($film['id'], $userFavorites ?? []) ? true : false;
-
+                $poster = base_url('uploads/posters/' . ($film['poster_path'] ?? 'no-poster.jpg'));
+                $isFav = in_array($film['id'], $userFavorites) ? true : false;
                 $jsTitle = addslashes($film['title'] ?? '');
-                $jsPoster = addslashes($poster ?? '');
+                $jsPoster = addslashes($poster);
             ?>
             <div class="film-card"
-            onclick="goDetail(<?= $film['id'] ?>, <?= isset($film['is_tmdb']) ? 1 : 0 ?>)>"
-            data-id="<?= esc($film['id']) ?>"
-            data-url="<?= base_url('detail/' . $film['id']) ?>"
-            data-genre="<?= esc($film['genre'] ?? '') ?>"
-            data-year="<?= esc($film['year'] ?? '') ?>"
-            data-rating="<?= esc($film['rating'] ?? 0) ?>">
+                onclick="window.location.href='<?= base_url('detail/' . $film['id']) ?>';"
+                data-id="<?= esc($film['id']) ?>"
+                data-url="<?= base_url('detail/' . $film['id']) ?>"
+                data-genre="<?= esc($film['genre'] ?? '') ?>"
+                data-year="<?= esc($film['year'] ?? '') ?>"
+                data-rating="<?= esc($film['rating'] ?? 0) ?>">
 
-            <img src="<?= esc($poster) ?>"
-                alt="<?= esc($film['title']) ?>"
-                class="film-poster"
-                onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
+                <img src="<?= esc($poster) ?>"
+                    alt="<?= esc($film['title']) ?>"
+                    class="film-poster"
+                    onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'">
 
-            <span class="film-rating"><?= number_format($film['rating'] ?? 0, 1) ?></span>
+                <span class="film-rating"><?= number_format($film['rating'] ?? 0, 1) ?></span>
 
-            <button class="film-favorite <?= $isFav ? 'favorited' : '' ?>"
-                    onclick="event.stopPropagation(); toggleFavorite(<?= (int)$film['id'] ?>, '<?= $jsTitle ?>', '<?= $jsPoster ?>', this)">
-                <?= $isFav ? '❤️' : '♡' ?>
-            </button>
+                <button class="film-favorite <?= $isFav ? 'favorited' : '' ?>"
+                        onclick="event.stopPropagation(); toggleFavorite(<?= (int)$film['id'] ?>, '<?= $jsTitle ?>', '<?= $jsPoster ?>', this)">
+                    <?= $isFav ? '❤️' : '♡' ?>
+                </button>
 
-            <div class="film-info">
-                <h3 class="film-title"><?= esc($film['title']) ?></h3>
-                <div class="film-meta">
-                    <span><?= esc($film['genre'] ?? '-') ?></span>
-                    <span><?= esc($film['year'] ?? '-') ?></span>
+                <div class="film-info">
+                    <h3 class="film-title"><?= esc($film['title']) ?></h3>
+                    <div class="film-meta">
+                        <span><?= esc($film['genre'] ?? '-') ?></span>
+                        <span><?= esc($film['year'] ?? '-') ?></span>
+                    </div>
                 </div>
             </div>
-        </div>
-
         <?php endforeach; ?>
     </div>
 
@@ -288,7 +265,6 @@ $userFavorites = $userFavorites ?? [];
     </div>
 </footer>
 
-
 <script>
 const csrfName = document.querySelector('meta[name="csrf-name"]').content;
 let csrfHash = document.querySelector('meta[name="csrf-hash"]').content;
@@ -333,7 +309,7 @@ function applyAll() {
     cards.forEach(card => {
         const title = (card.querySelector(".film-title")?.innerText || '').toLowerCase();
         const filmGenre = (card.dataset.genre || '').toLowerCase();
-        const filmGenres = filmGenre.split(',').map(g => g.trim()); // fix untuk multi-genre
+        const filmGenres = filmGenre.split(',').map(g => g.trim());
         const filmYear = card.dataset.year || '';
         const filmRating = parseFloat(card.dataset.rating || 0);
 
@@ -392,6 +368,12 @@ searchInput.addEventListener("keydown", e => {
     }
 });
 
+function filterByGenre(genre) {
+    genreFilter.value = genre;
+    applyAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function toggleFavorite(movieId, title, poster_path, btn) {
     const payload = {
         movie_id: movieId,
@@ -431,35 +413,6 @@ function toggleFavorite(movieId, title, poster_path, btn) {
         console.error(err);
         alert('Gagal menyimpan favorit. Coba lagi.');
     });
-}
-</script>
-<script>
-    document.querySelectorAll(".film-card").forEach(card => {
-    card.addEventListener("click", () => {
-        const url = card.dataset.url;
-        if (url) window.location.href = url;
-    });
-});
-
-
-document.querySelectorAll('.film-card').forEach(card => {
-    card.addEventListener('click', function (e) {
-
-        if (e.target.closest(".film-favorite")) return;
-
-        const id = this.dataset.id;
-
-        if (!id) return;
-
-        window.location.href = "<?= base_url('detail') ?>/" + id;
-    });
-});
-function goDetail(id, isTmdb) {
-    if (isTmdb == 1) {
-        window.location.href = "<?= base_url('detail_tmdb/') ?>" + id;
-    } else {
-        window.location.href = "<?= base_url('detail/') ?>" + id;
-    }
 }
 </script>
 </body>

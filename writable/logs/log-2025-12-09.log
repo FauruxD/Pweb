@@ -657,3 +657,936 @@ WARNING - 2025-12-09 03:32:35 --> [DEPRECATED] json_decode(): Passing null to pa
  9 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
 DEBUG - 2025-12-09 03:32:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2025-12-09 03:32:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:05:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:05:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-12-09 22:05:48 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\Movix_Fix\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\Movix_Fix\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'movix_db', 3306, '', 0)
+#1 C:\xampp\htdocs\Movix_Fix\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\Movix_Fix\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\Movix_Fix\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\Movix_Fix\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\Movix_Fix\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#6 C:\xampp\htdocs\Movix_Fix\app\Models\UserModel.php(39): CodeIgniter\BaseModel->first()
+#7 C:\xampp\htdocs\Movix_Fix\app\Controllers\Auth.php(80): App\Models\UserModel->verifyPassword('admin@gmail.com', 'secret')
+#8 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(933): App\Controllers\Auth->processLogin()
+#9 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\Movix_Fix\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\Movix_Fix\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\Movix_Fix\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 C:\xampp\htdocs\Movix_Fix\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#15 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\Movix_Fix\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\Movix_Fix\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\Movix_Fix\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\Movix_Fix\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\Movix_Fix\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\Movix_Fix\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#5 C:\xampp\htdocs\Movix_Fix\app\Models\UserModel.php(39): CodeIgniter\BaseModel->first()
+#6 C:\xampp\htdocs\Movix_Fix\app\Controllers\Auth.php(80): App\Models\UserModel->verifyPassword('admin@gmail.com', 'secret')
+#7 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(933): App\Controllers\Auth->processLogin()
+#8 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#9 C:\xampp\htdocs\Movix_Fix\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\Movix_Fix\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\Movix_Fix\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\Movix_Fix\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 C:\xampp\htdocs\Movix_Fix\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#14 {main}
+CRITICAL - 2025-12-09 22:05:48 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+[Method: POST, Route: auth/login]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `users`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(715): CodeIgniter\Model->doFirst()
+ 5 APPPATH\Models\UserModel.php(39): CodeIgniter\BaseModel->first()
+ 6 APPPATH\Controllers\Auth.php(80): App\Models\UserModel->verifyPassword('admin@gmail.com', 'secret')
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->processLogin()
+ 8 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 9 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:06:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:06:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:06:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:06:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:06:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:06:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:06:41 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:06:41 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:06:41 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:06:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:06:46 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:06:46 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:06:46 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:00 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:00 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:00 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:04 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:04 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:04 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:06 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:06 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:06 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_28', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_18', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_35', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_27', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_10749', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_16', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_99', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:11 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_878', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:13 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 127.
+ 1 APPPATH\Controllers\Genre.php(127): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(125): App\Controllers\Genre->cached('genre_movies_28', Object(Closure), 3600)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->show('28')
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_28', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_18', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_35', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_27', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_10749', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_16', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_99', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:15 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_878', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:07:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:07:16 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:16 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:07:16 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:09:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:09:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:10:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:13:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:13:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:15:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:15:08 --> ErrorException: Undefined array key "aksi"
+[Method: GET, Route: genre]
+in APPPATH\Views\genre\index.php on line 63.
+ 1 APPPATH\Views\genre\index.php(63): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "aksi"', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php', 63)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/index', [], true)
+ 5 APPPATH\Controllers\Genre.php(48): view('genre/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:17:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:17:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:17:36 --> ErrorException: Undefined array key "aksi"
+[Method: GET, Route: genre]
+in APPPATH\Views\genre\index.php on line 54.
+ 1 APPPATH\Views\genre\index.php(54): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "aksi"', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php', 54)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/index', [], true)
+ 5 APPPATH\Controllers\Genre.php(48): view('genre/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:20:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:20:30 --> ErrorException: Undefined array key "aksi"
+[Method: GET, Route: genre]
+in APPPATH\Views\genre\index.php on line 55.
+ 1 APPPATH\Views\genre\index.php(55): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "aksi"', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php', 55)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/index', [], true)
+ 5 APPPATH\Controllers\Genre.php(48): view('genre/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:20:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:23:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:23:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:23:27 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:23:27 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:23:27 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:24:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:24:29 --> ErrorException: Undefined array key "action"
+[Method: GET, Route: genre]
+in APPPATH\Views\genre\index.php on line 61.
+ 1 APPPATH\Views\genre\index.php(61): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "action"', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php', 61)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/index', [], true)
+ 5 APPPATH\Controllers\Genre.php(48): view('genre/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:26:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:26:36 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:26:36 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:26:36 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:30:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:30:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:30:16 --> ErrorException: Undefined variable $imageUrl
+[Method: GET, Route: genre/action]
+in APPPATH\Views\genre\genre_movies.php on line 54.
+ 1 APPPATH\Views\genre\genre_movies.php(54): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $imageUrl', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\genre_movies.php', 54)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\genre_movies.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/genre_movies', [], true)
+ 5 APPPATH\Controllers\Genre.php(66): view('genre/genre_movies', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->show('action')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:31:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:31:54 --> ErrorException: Undefined array key 3
+[Method: GET, Route: genre]
+in APPPATH\Views\genre\index.php on line 90.
+ 1 APPPATH\Views\genre\index.php(90): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 3', 'C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php', 90)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\Movix_Fix\\app\\Views\\genre\\index.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('genre/index', [], true)
+ 5 APPPATH\Controllers\Genre.php(48): view('genre/index', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:33:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:36:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_28', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_18', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_35', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_27', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_10749', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_16', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_99', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:36:55 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Genre.php on line 103.
+ 1 APPPATH\Controllers\Genre.php(103): json_decode(null, true)
+ 2 APPPATH\Controllers\Genre.php(54): App\Controllers\Genre->App\Controllers\{closure}()
+ 3 APPPATH\Controllers\Genre.php(101): App\Controllers\Genre->cached('genre_total_878', Object(Closure), 7200)
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Genre->index()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Genre))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:36:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:37:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:41:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:41:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:42:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-12-09 22:42:40 --> Failed to fetch TMDB recommendations
+DEBUG - 2025-12-09 22:42:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 22:42:44 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:42:44 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 22:42:44 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:48:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:48:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:48:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:49:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:49:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:50:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:52:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:52:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:54:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:54:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:54:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:55:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:55:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:56:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-09 22:56:37 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "login.php"
+[Method: GET, Route: auth/login]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('login.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('login', [], true)
+ 3 APPPATH\Controllers\Auth.php(18): view('login')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->login()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 22:58:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:58:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 22:59:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:00:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:05:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 23:06:13 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 23:06:13 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 23:06:13 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+DEBUG - 2025-12-09 23:06:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-09 23:06:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+WARNING - 2025-12-09 23:06:39 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 183.
+ 1 APPPATH\Controllers\Home.php(183): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(61): App\Controllers\Home->getPopularFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(60): App\Controllers\Home->cachedRequest('popular_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 23:06:39 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 198.
+ 1 APPPATH\Controllers\Home.php(198): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(66): App\Controllers\Home->getMovieByIdFromTMDB(475557)
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(65): App\Controllers\Home->cachedRequest('movie_475557', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')
+WARNING - 2025-12-09 23:06:39 --> [DEPRECATED] json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in APPPATH\Controllers\Home.php on line 190.
+ 1 APPPATH\Controllers\Home.php(190): json_decode(null, true)
+ 2 APPPATH\Controllers\Home.php(93): App\Controllers\Home->getTrendingFromTMDB()
+ 3 APPPATH\Controllers\Home.php(145): App\Controllers\Home->App\Controllers\{closure}()
+ 4 APPPATH\Controllers\Home.php(92): App\Controllers\Home->cachedRequest('trending_movies', Object(Closure))
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Home->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Movix_Fix\\public\\index.php')

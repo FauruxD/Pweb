@@ -30,7 +30,10 @@
             </div>
         <?php endif; ?>
 
-        <form action="<?= base_url('auth/login') ?>" method="POST">
+        <form action="<?= base_url('auth/login') ?>" method="POST" id="loginForm">
+            <!-- Hidden input untuk menentukan tipe login -->
+            <input type="hidden" name="login_type" id="loginType" value="user">
+            
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
@@ -39,7 +42,7 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                </div>
+            </div>
 
             <div class="remember-forgot">
                 <label class="remember">
@@ -60,17 +63,20 @@
     <script>
         const userTab = document.getElementById('userTab');
         const adminTab = document.getElementById('adminTab');
+        const loginTypeInput = document.getElementById('loginType');
 
-        // Tab switching (tetap dipertahankan)
+        // Tab switching untuk User
         userTab.addEventListener('click', function() {
             userTab.classList.add('active');
             adminTab.classList.remove('active');
-            // Opsional: tambahkan window.location.href atau fungsi form switch di sini
+            loginTypeInput.value = 'user'; // Set login type ke user
         });
 
+        // Tab switching untuk Admin
         adminTab.addEventListener('click', function() {
             adminTab.classList.add('active');
             userTab.classList.remove('active');
+            loginTypeInput.value = 'admin'; // Set login type ke admin
         });
     </script>
 </body>

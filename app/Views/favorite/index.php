@@ -1,6 +1,3 @@
-<?php
-$tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -19,12 +16,14 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
         .empty-favs { color:#9aa3b0; padding:40px 10px; text-align:center; }
         .reco-section { margin-top:50px; }
         .reco-list { display:flex; gap:16px; overflow-x:auto; padding-bottom:12px; }
-        .reco-card { width:150px; flex:0 0 auto; }
-        .reco-card img { width:100%; border-radius:8px; }
+        .reco-card { width:150px; flex:0 0 auto; cursor:pointer; transition: transform 0.2s; }
+        .reco-card:hover { transform: scale(1.05); }
+        .reco-card img { width:100%; border-radius:8px; object-fit: cover; height: 225px; }
+        .reco-title { color:#fff; font-size:13px; margin-top:6px; }
+        .reco-meta { color:#8899aa; font-size:11px; margin-top:2px; }
     </style>
 </head>
 <body>
-
 
 <nav class="navbar">
     <div class="navbar-left">
@@ -56,7 +55,6 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
     </div>
 </nav>
 
-
 <div class="main-content">
 
     <div class="page-header">
@@ -75,18 +73,18 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
             <div class="empty-favs">
                 <p>Belum ada film favorit.</p>
                 <p>Tambahkan film dari halaman detail.</p>
+                <a href="<?= base_url('dashboard') ?>" style="display:inline-block; margin-top:20px; padding:12px 24px; background:#f39c12; color:#000; text-decoration:none; border-radius:8px; font-weight:600;">
+                    Jelajahi Film
+                </a>
             </div>
         <?php else: ?>
             <?php foreach($movies as $m):
-                $poster = isset($m['poster_path']) 
-                    ? (strpos($m['poster_path'], '/') === 0 ? $tmdb_image_base . $m['poster_path'] : $m['poster_path']) 
-                    : base_url('assets/images/no-poster.png');
                 $detailUrl = base_url('detail/' . $m['movie_id']);
             ?>
                 <div class="film-card">
                     <img
                         class="film-poster"
-                        src="<?= $poster ?>"
+                        src="<?= esc($m['poster_path']) ?>"
                         style="cursor:pointer;"
                         onclick="window.location.href='<?= $detailUrl ?>'"
                         alt="<?= esc($m['title']) ?>"
@@ -99,32 +97,39 @@ $tmdb_image_base = 'https://image.tmdb.org/t/p/w500';
         <?php endif; ?>
     </div>
 
+    <!-- Rekomendasi Random dari Database Lokal -->
+    <?php if(!empty($recommendations)): ?>
     <div class="reco-section">
-        <h2 style="color:#fff; margin-bottom:12px;">Rekomendasi Untukmu</h2>
-        <p>Rekomendasi Film Untuk Anda</p>
+        <h2 style="color:#fff; margin-bottom:12px;">Film Lainnya</h2>
+        <p style="color:#8899aa; margin-bottom:20px;">Jelajahi koleksi film lainnya</p>
         <div class="reco-list">
-            <?php if(!empty($recommendations)): ?>
-                <?php foreach($recommendations as $r): 
-                    $rposter = $tmdb_image_base . $r['poster_path'];
-                    $detailUrl = base_url('detail/' . $r['id']);
-                ?>
-                    <div class="reco-card">
-                        <img src="<?= $rposter ?>" style="cursor:pointer;" onclick="window.location.href='<?= $detailUrl ?>'" alt="<?= esc($r['title'] ?? $r['name']) ?>">
-                        <div style="color:#fff; font-size:13px; margin-top:6px;">
-                            <?= esc($r['title'] ?? $r['name']) ?>
-                        </div>
+            <?php foreach($recommendations as $r): 
+                $rposter = base_url('uploads/posters/' . ($r['poster_path'] ?? 'no-poster.jpg'));
+                $detailUrl = base_url('detail/' . $r['id']);
+            ?>
+                <div class="reco-card" onclick="window.location.href='<?= $detailUrl ?>'">
+                    <img 
+                        src="<?= $rposter ?>" 
+                        alt="<?= esc($r['title']) ?>"
+                        onerror="this.src='<?= base_url('assets/images/placeholder.jpg') ?>'"
+                    >
+                    <div class="reco-title">
+                        <?= esc($r['title']) ?>
                     </div>
-                <?php endforeach ?>
-            <?php else: ?>
-                <div class="reco-card">
-                    <img src="<?= base_url('assets/images/sample-1.jpg') ?>">
-                    <div style="color:#fff; font-size:13px; margin-top:6px;">Blade Runner</div>
+                    <div class="reco-meta">
+                        <?= esc($r['genre'] ?? '') ?> • <?= esc($r['year'] ?? '') ?>
+                        <?php if(isset($r['rating']) && $r['rating'] > 0): ?>
+                            • ⭐ <?= number_format($r['rating'], 1) ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            <?php endif; ?>
+            <?php endforeach ?>
         </div>
     </div>
+    <?php endif; ?>
 
 </div>
+
 <script>
 function toggleUserMenu() {
     document.getElementById("userMenu").classList.toggle("show");

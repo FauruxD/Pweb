@@ -4,35 +4,28 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\FavoriteModel;
+use App\Models\FilmModel;
 
 class Favorite extends BaseController
 {
-    protected $apiKey;
-    protected $baseUrl;
-
-    public function __construct()
-    {
-        // TMDB API Config
-        $this->apiKey = getenv('TMDB_API_KEY');
-        $this->baseUrl = getenv('TMDB_BASE_URL') ?: 'https://api.themoviedb.org/3';
-    }
-
     public function index()
     {
         $favModel = new FavoriteModel();
+        $filmModel = new FilmModel();
         $userId = session('user_id');
 
+        // Ambil daftar film favorit user
         $movies = $favModel
             ->where('user_id', $userId)
             ->findAll();
 
-        // ✅ FITUR BARU: Ambil rekomendasi dari TMDB
-        $recommendations = $this->getRandomRecommendations();
+        // Ambil rekomendasi dari database lokal
+        $recommendations = $this->getLocalRecommendations();
 
         return view('favorite/index', [
             'title' => 'Favorit – Movix',
             'movies' => $movies,
-            'recommendations' => $recommendations // ✅ Kirim ke view
+            'recommendations' => $recommendations
         ]);
     }
 
@@ -72,58 +65,44 @@ class Favorite extends BaseController
     }
 
     // =========================================================================
-    // ✅ FUNGSI BARU: Ambil Rekomendasi Random dari TMDB
+    // Ambil Rekomendasi Random dari Database Lokal
     // =========================================================================
-    private function getRandomRecommendations($count = 5)
+    private function getLocalRecommendations($count = 5)
     {
-        // Random page antara 1-5 untuk variasi
-        $randomPage = rand(1, 5);
-
-        $url = "{$this->baseUrl}/movie/popular?api_key={$this->apiKey}&language=id-ID&page={$randomPage}";
+        $filmModel = new FilmModel();
 
         try {
-            $response = @file_get_contents($url);
-            
-            if ($response === false) {
-                log_message('error', 'Failed to fetch TMDB recommendations');
-                return [];
-            }
-
-            $data = json_decode($response, true);
-
-            if (isset($data['results']) && !empty($data['results'])) {
-                // Ambil random films dari results
-                $results = $data['results'];
-                shuffle($results); // Acak urutan
-                return array_slice($results, 0, $count); // Ambil 12 film pertama
-            }
+            // Ambil film random dari database
+            return $filmModel
+                ->orderBy('RAND()')
+                ->limit($count)
+                ->findAll();
         } catch (\Exception $e) {
             log_message('error', 'Error fetching recommendations: ' . $e->getMessage());
+            return [];
         }
-
-        return []; // Return empty jika gagal
     }
 
     // =========================================================================
     // ALTERNATIVE: Get Recommendations by Genre
     // =========================================================================
-    private function getRecommendationsByGenre($genreId = 28, $count = 5)
+    private function getRecommendationsByGenre($genre = 'Action', $count = 5)
     {
-        // Genre IDs: 28=Action, 35=Comedy, 18=Drama, 27=Horror, 10749=Romance
-        $url = "{$this->baseUrl}/discover/movie?api_key={$this->apiKey}&language=id-ID&with_genres={$genreId}&sort_by=popularity.desc";
+        $filmModel = new FilmModel();
+        $favModel = new FavoriteModel();
+        $userId = session('user_id');
 
         try {
-            $response = @file_get_contents($url);
-            
-            if ($response === false) {
-                return [];
-            }
-
-            $data = json_decode($response, true);
-
-            if (isset($data['results'])) {
-                return array_slice($data['results'], 0, $count);
-            }
+            return $filmModel
+                ->where('genre', $genre)
+                ->whereNotIn('id', function($builder) use ($favModel, $userId) {
+                    return $favModel
+                        ->select('movie_id')
+                        ->where('user_id', $userId);
+                })
+                ->orderBy('rating', 'DESC')
+                ->limit($count)
+                ->findAll();
         } catch (\Exception $e) {
             log_message('error', 'Failed to fetch genre recommendations: ' . $e->getMessage());
         }
@@ -132,24 +111,24 @@ class Favorite extends BaseController
     }
 
     // =========================================================================
-    // ALTERNATIVE: Get Top Rated Movies
+    // ALTERNATIVE: Get Top Rated Movies (Exclude Favorites)
     // =========================================================================
-    private function getTopRatedMovies($count = 12)
+    private function getTopRatedMovies($count = 5)
     {
-        $url = "{$this->baseUrl}/movie/top_rated?api_key={$this->apiKey}&language=id-ID&page=1";
+        $filmModel = new FilmModel();
+        $favModel = new FavoriteModel();
+        $userId = session('user_id');
 
         try {
-            $response = @file_get_contents($url);
-            
-            if ($response === false) {
-                return [];
-            }
-
-            $data = json_decode($response, true);
-
-            if (isset($data['results'])) {
-                return array_slice($data['results'], 0, $count);
-            }
+            return $filmModel
+                ->whereNotIn('id', function($builder) use ($favModel, $userId) {
+                    return $favModel
+                        ->select('movie_id')
+                        ->where('user_id', $userId);
+                })
+                ->orderBy('rating', 'DESC')
+                ->limit($count)
+                ->findAll();
         } catch (\Exception $e) {
             log_message('error', 'Failed to fetch top rated: ' . $e->getMessage());
         }
@@ -158,26 +137,26 @@ class Favorite extends BaseController
     }
 
     // =========================================================================
-    // ALTERNATIVE: Get Trending Movies
+    // ALTERNATIVE: Get Recent Movies
     // =========================================================================
-    private function getTrendingMovies($count = 5)
+    private function getRecentMovies($count = 5)
     {
-        $url = "{$this->baseUrl}/trending/movie/week?api_key={$this->apiKey}&language=id-ID";
+        $filmModel = new FilmModel();
+        $favModel = new FavoriteModel();
+        $userId = session('user_id');
 
         try {
-            $response = @file_get_contents($url);
-            
-            if ($response === false) {
-                return [];
-            }
-
-            $data = json_decode($response, true);
-
-            if (isset($data['results'])) {
-                return array_slice($data['results'], 0, $count);
-            }
+            return $filmModel
+                ->whereNotIn('id', function($builder) use ($favModel, $userId) {
+                    return $favModel
+                        ->select('movie_id')
+                        ->where('user_id', $userId);
+                })
+                ->orderBy('year', 'DESC')
+                ->limit($count)
+                ->findAll();
         } catch (\Exception $e) {
-            log_message('error', 'Failed to fetch trending: ' . $e->getMessage());
+            log_message('error', 'Failed to fetch recent movies: ' . $e->getMessage());
         }
 
         return [];
